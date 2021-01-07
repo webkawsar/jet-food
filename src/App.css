@@ -1,0 +1,40 @@
+.highlighter {
+  color: #FF4C24 !important;
+  font-weight: bold;
+}
+
+
+.mainButton {
+  color: white;
+  border-radius: 30px;
+  padding: 15px 40px;
+  background-color: #FF4C24;
+  font-weight: bold;
+  font-size: large;
+  display: inline-block;
+}
+
+
+@media all and (max-width: 960px) {
+
+  .left-image {
+    display: none;
+  }
+
+}
+
+
+@media all and (max-width: 600px) {
+
+  .right-image {
+    display: none;
+  }
+
+}
+
+
+
+
+
+
+
