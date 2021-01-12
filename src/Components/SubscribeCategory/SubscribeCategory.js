@@ -1,5 +1,6 @@
-import { Box, Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Grid, makeStyles, Paper, Typography } from '@material-ui/core';
+import { Box, Grid, makeStyles } from '@material-ui/core';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
     root: {
@@ -7,11 +8,7 @@ const useStyles = makeStyles({
 
    
     },
-    activeBox: {
-        backgroundColor: "#EAEAEA",
-        cursor: "pointer",
-        borderRadius: "10px"
-    },
+
     box: {
         padding: "20px",
 
@@ -20,29 +17,46 @@ const useStyles = makeStyles({
             cursor: "pointer",
             borderRadius: "10px"
         }
-    }
-    
-
-
-
-
+    },
+    default: {
+        backgroundColor: "#FF4C24",
+        cursor: "pointer",
+        borderRadius: "10px",
+        "&:hover": {
+            backgroundColor: "#FF4C24",
+        }
+        
+    },
 
 
   });
 
-const SubscribeCategory = () => {
-
+const SubscribeCategory = (props) => {
     const classes = useStyles();
+    const { id, name, img } = props.category;
+    const selected = props.selectedCategory;
+    
+
+    let active = "";
+    if(id === selected){
+
+        active = `${classes.default}`
+
+    }
+
+    
     return (
         <>
             <Grid item xs={4} sm={3} md={2} >
-                <Box className={classes.box}>
-                    <Box style={{textAlign: "center"}}>
-                        <img style={{borderRadius: "6px", maxHeight: "120px"}} src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1000&q=80" alt=""/>
-                    </Box>
-                    <Box>
-                        <h5 style={{textAlign: "center", margin: "12px 0 0 0"}}>Name</h5>
-                    </Box>
+                <Box className={`${classes.box} ${active}`} onClick={() => props.handleCategory(props.category)}>
+                    <Link to={ `/subscribe/${id}`}>
+                        <Box style={{textAlign: "center"}}>
+                            <img style={{borderRadius: "6px", maxHeight: "120px"}} src={img} alt=""/>
+                        </Box>
+                        <Box>
+                            <h5 style={{textAlign: "center", margin: "12px 0 0 0"}}>{name}</h5>
+                        </Box>
+                    </Link>
                 </Box>
             </Grid>
         </>

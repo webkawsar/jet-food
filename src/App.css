@@ -12,7 +12,21 @@
   font-weight: bold;
   font-size: large;
   display: inline-block;
+  border: none;
+  margin: 0 5px;
 }
+
+
+.cartButton {
+  color: white;
+  border-radius: 30px;
+  padding: 10px 20px;
+  background-color: #FF4C24;
+  display: inline-block;
+  border: none;
+  margin-right: 15px;
+}
+
 
 
 @media all and (max-width: 960px) {

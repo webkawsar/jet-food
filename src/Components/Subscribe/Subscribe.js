@@ -1,13 +1,19 @@
-import { Box, Container, Grid, MenuItem, Paper, Switch, TextField } from '@material-ui/core';
+import { Box, Grid, Paper, Switch, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import fakeData from '../../FakeData/FakeData';
-import SingleCategory from '../Category/SingleCategory';
 import Pagination from '@material-ui/lab/Pagination';
 import SubscribeCategory from '../SubscribeCategory/SubscribeCategory';
-import CustomizedSwitches from '../Test';
+import { five, four, one, three, two, zero } from './OptionsData';
+import Cart from '../Cart/Cart';
+import { UserContext } from '../../App';
+import { useHistory, useParams } from 'react-router-dom';
 
 const useStyles = makeStyles({
+    root: {
+        width: "90%",
+        margin: "0 auto"
+    },
     paper: {
         padding: "20px 30px"
     }
@@ -19,146 +25,137 @@ const Subscribe = () => {
 
     const [categories, setCategories] = useState(fakeData);
 
-    const [checked, setChecked] = useState({checked: true});
+    const [selectedCategory, setSelectedCategory] = useState(categories[0].id);
+
+    const [checked, setChecked] = useState({checked: false});
+    const [page, setPage] = useState(0);
+    const [orders, setOrders] = useState([]);
+    const [options, setOptions] = useState([]);
+    const [mealsTime, setMealsTime] = useState("");
+    const [days, setDays] = useState(0);
+    const { id } = useParams();
+    
+   
+
     const handleChange = (event) => {
         setChecked({ ...checked, [event.target.name]: event.target.checked });
+        setPage(0);
+        setDays(0);
     };
 
 
-    const [page, setPage] = useState(1);
+    
     const handleMealsClick = (event, value) => {
       setPage(value);
     };
 
 
-    const [options, setOptions] = useState([]);
-
     useEffect(() => {
 
-        if(page === 1){
+        console.log("UseEffect");
+        
+        if(id){
+            setSelectedCategory(parseInt(id))
+        } 
 
-            const one = [
-                {
-                    value: '',
-                    label: 'Choose an options',
-                },
-                {
-                    value: 'breakfast',
-                    label: 'Breakfast',
-                },
-                {
-                    value: 'lunch',
-                    label: 'Lunch',
-                },
-                {
-                    value: 'dinner',
-                    label: 'Dinner',
-                },
-            ]
+        if(page === 0){
+
+            setOptions([...zero])
+
+        }else if(page === 1){
     
-            setOptions([...options, ...one])
+            setOptions([...one])
 
         } else if(page === 2){
-
-            const two = [
-                {
-                    value: '',
-                    label: 'Choose an options',
-                },
-                {
-                    value: 'breakfast, Lunch',
-                    label: 'Breakfast, Lunch',
-                },
-                {
-                    value: 'breakfast, dinner',
-                    label: 'Breakfast, Dinner',
-                },
-                {
-                    value: 'lunch, dinner',
-                    label: 'Lunch, Dinner',
-                },
-            ]
       
             setOptions([...two])
 
         } else if(page === 3){
 
-            const three = [
-                {
-                    value: '',
-                    label: 'Choose an options',
-                },
-                {
-                    value: 'breakfast, lunch, dinner',
-                    label: 'Breakfast, Lunch, Dinner',
-                },
-                {
-                    value: 'lunch, 2x dinner',
-                    label: 'Lunch, 2x Dinner',
-                },
-                {
-                    value: '2x lunch, dinner',
-                    label: '2x Lunch, Dinner',
-                },
-            ]
-      
             setOptions([...three])
 
         } else if(page === 4){
 
-            const four = [
-                {
-                    value: '',
-                    label: 'Choose an options',
-                },
-                {
-                    value: 'breakfast, lunch, 2x dinner',
-                    label: 'Breakfast, Lunch, 2x Dinner',
-                },
-                {
-                    value: 'breakfast, 2x lunch, dinner',
-                    label: 'Breakfast, 2x Lunch, Dinner',
-                },
-                {
-                    value: '2x lunch, 2x dinner',
-                    label: '2x Lunch, 2x Dinner',
-                },
-            ]
-      
             setOptions([...four])
 
         } else if(page === 5){
 
-            const five = [
-                {
-                    value: '',
-                    label: 'Choose an options',
-                },
-                {
-                    value: 'breakfast, 2x lunch, 2x dinner',
-                    label: 'Breakfast, 2x Lunch, 2x Dinner',
-                }
-            ]
-      
             setOptions([...five])
         }
 
-    }, [page])
+    }, [page, id])
 
-
-
-    const [mealsTime, setMealsTime] = useState("");
+    
     const handleOptions = (event) => {
         setMealsTime(event.target.value);
     };
 
-
-
-    const [days, setDays] = useState(6);
+    
     const handleDaysClick = (event, value) => {
         setDays(value);
     };
 
+ 
+    const handleCategory = (cat) => {
+
+        setSelectedCategory(cat.id)
+        setPage(0);
+        setOptions([]);
+        setMealsTime("");
+        setDays(0);
+        
+    }
+
+    
+    useEffect(() => {
+
+        if(checked && page && mealsTime && days && selectedCategory){
+
+            let period = "";
+            if(checked.checked){
+                
+                period = "weekly";
+            } else {
+
+                period = "monthly"
+            }
+
+            const orderData = {
+                    category: selectedCategory,
+                    period: period,
+                    meals: page,
+                    mealsTime: mealsTime,
+                    days: days,
+                    optionals: {
+                        juice: ""
+                    }
+    
+                }
+            
+            const order = [...orders, orderData]
+            setOrders(order);
+    
+        }
+
+
+    }, [checked, page, mealsTime, days, selectedCategory])
+
+
+    const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+   const history = useHistory();
+    const handleAddToCart = () => {
+
+        console.log("Clicked add to cat button");
+        setLoggedInUser({...loggedInUser, orders})
+        history.push("/cart")
+        // const data = loggedInUser?.orders;
+        // if(data){
+        //     localStorage.setItem("Orders", data);
+        // }
+
+    }
+
+    console.log(loggedInUser);
     
 
 
@@ -166,22 +163,28 @@ const Subscribe = () => {
     return (
         <div>
             
-            <Container>
+            <Box className={classes.root}>
                 <Grid container>
-                    <Grid item md={9}>
+                    <Grid item md={8}>
                         <Paper className={classes.paper}>
                             <Box>
                                 <h3 style={{textAlign: "center", marginBottom: "20px"}}>Select Your Meal Plan</h3>
                                 <Grid container spacing={2}>
                                     {
-                                        categories.map(category => <SubscribeCategory key={category.id}></SubscribeCategory>)
+                                        categories.map(category => <SubscribeCategory 
+                                            handleCategory={handleCategory} 
+                                            key={category.id} 
+                                            category={category}
+                                            categories={categories}
+                                            selectedCategory={selectedCategory}
+                                            ></SubscribeCategory>)
                                     }
 
                                 </Grid>
                             </Box>
                             <Box>
-                                <Grid container>
-                                    <Grid item xs={12} sm={3} md={2}>
+                                <Grid container spacing={3}>
+                                    <Grid item xs={12} sm={2} md={2}>
                                         <span >{" "}</span>
                                     </Grid>
 
@@ -189,7 +192,7 @@ const Subscribe = () => {
                                         <label >Period</label>
                                     </Grid>
 
-                                    <Grid item xs={6} sm={5} md={4}>
+                                    <Grid item xs={6} sm={6} md={4}>
                                         <label htmlFor="period">Monthly</label>
                                         <Switch
                                             id="period"
@@ -202,8 +205,8 @@ const Subscribe = () => {
                                     </Grid>
                                 </Grid>
 
-                                <Grid container>
-                                    <Grid item xs={12} sm={3} md={2}>
+                                <Grid container spacing={3}>
+                                    <Grid item xs={12} sm={2} md={2}>
                                         <span >{" "}</span>
                                     </Grid>
 
@@ -211,7 +214,7 @@ const Subscribe = () => {
                                         <label htmlFor="meals">Meals per day</label>
                                     </Grid>
 
-                                    <Grid item xs={6} sm={5} md={4}>
+                                    <Grid item xs={6} sm={6} md={4}>
                                         <Pagination
                                             onChange={handleMealsClick}
                                             name="meals"
@@ -224,8 +227,8 @@ const Subscribe = () => {
                                     </Grid>
                                 </Grid>
 
-                                <Grid container>
-                                    <Grid item xs={12} sm={3} md={2}>
+                                <Grid container spacing={3}>
+                                    <Grid item xs={12} sm={2} md={2}>
                                         <span >{" "}</span>
                                     </Grid>
 
@@ -233,7 +236,7 @@ const Subscribe = () => {
                                         <label htmlFor="options">Meals options</label>
                                     </Grid>
 
-                                    <Grid item xs={6} sm={5} md={4}>
+                                    <Grid item xs={6} sm={6} md={4}>
                                         <TextField
                                             id="select"
                                             select
@@ -243,19 +246,20 @@ const Subscribe = () => {
                                             SelectProps={{
                                                 native: true,
                                             }}
-                                            helperText="Please select your meals"
+                                            // helperText="Please select your meals"
                                         >
                                             {options.map((option) => (
                                                 <option key={option.value} value={option.value}>
                                                     {option.label}
+
                                                 </option>
                                             ))}
                                         </TextField>
                                     </Grid>
                                 </Grid>
                                 
-                                <Grid container>
-                                    <Grid item xs={12} sm={3} md={2}>
+                                <Grid container spacing={3}>
+                                    <Grid item xs={12} sm={2} md={2}>
                                         <span >{" "}</span>
                                     </Grid>
 
@@ -263,7 +267,7 @@ const Subscribe = () => {
                                         <label htmlFor="days">Days per Week</label>
                                     </Grid>
 
-                                    <Grid item xs={6} sm={5} md={4}>
+                                    <Grid item xs={6} sm={6} md={4}>
                                         <Pagination
                                             onChange={handleDaysClick}
                                             name="meals"
@@ -276,29 +280,29 @@ const Subscribe = () => {
                                     </Grid>
                                 </Grid>
                             </Box>
-
                             
-
-                        
-
                             <hr/>
+
                             <Box>
-                                <h3>Add your snacks and juices</h3>
+                                <h3 style={{textAlign: "center"}}>Add your snacks and juices</h3>
                                 <label htmlFor="optional">Protein Balls</label>
                                 <br/>
 
-                                <input type="radio" name="juice" id="juice"/> <span>3 ($9.50)</span> <br/>
-                                <input type="radio" name="juice" id="juice"/> <span>5 ($15.50)</span>
-
+                                <input type="radio" name="juice" id="first"/> <label htmlFor="first">3 ($9.50)</label> <br/>
+                                <input type="radio" name="juice" id="second"/> <label htmlFor="second">5 ($15.50)</label>
+                                
                             </Box>
-
                         </Paper>
                     </Grid>
-                    <Grid item md={3}>
-                        <h1>Cart</h1>
+                    <Grid item md={4}>
+                        <Cart 
+                            handleAddToCart={handleAddToCart} 
+                            orders={orders}
+                        >
+                        </Cart>
                     </Grid>
                 </Grid>
-            </Container>
+            </Box>
         </div>
     );
 };
