@@ -16,6 +16,11 @@
   margin: 0 5px;
 }
 
+.mainButton:hover {
+  background-color: black;
+  color: white;
+}
+
 
 .cartButton {
   color: white;

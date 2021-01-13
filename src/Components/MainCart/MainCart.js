@@ -5,6 +5,7 @@ import { UserContext } from '../../App';
 import fakeData from '../../FakeData/FakeData';
 import CartHeader from '../CartHeader/CartHeader';
 import CartItem from '../CartItem/CartItem';
+import Header from '../Header/Header';
 
 
 
@@ -35,9 +36,10 @@ const MainCart = () => {
     return (
         <Container>
             <Box>
+                <Header />
                 <CartHeader></CartHeader>
             </Box>
-            <Grid container spacing={4}>
+            <Grid container spacing={5}>
                 <Grid item md={12}>
                     <Box display="flex" justifyContent="center">
                         <Link className="mainButton" to="/subscribe">Add Another Meal Plan</Link>

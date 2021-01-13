@@ -1,14 +1,18 @@
 import './App.css';
-import Header from './Components/Header/Header';
-import HeaderMain from './Components/HeaderMain/HeaderMain';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import CategoryDetails from './Components/CategoryDetails/CategoryDetails';
-import Subscribe from './Components/Subscribe/Subscribe';
 import { createContext, useState } from 'react';
 import MainCart from './Components/MainCart/MainCart';
+import Home from './Pages/Home/Home';
+import MainSubscribe from './Pages/MainSubscribe/MainSubscribe';
+import MainCheckout from './Pages/MainCheckout/MainCheckout';
+
+
 
 
 export const UserContext = createContext();
+
+
 
 function App() {
 
@@ -28,13 +32,11 @@ function App() {
           <Switch>
             
             <Route exact path="/">
-              <Header />
-              <HeaderMain />
+              <Home />
             </Route>
 
             <Route path="/home">
-              <Header></Header>
-              <HeaderMain />
+              <Home />
             </Route>
 
             <Route path="/foodcat/:id">
@@ -42,13 +44,16 @@ function App() {
             </Route>
 
             <Route path="/subscribe/:id?">
-              <Subscribe />
+              <MainSubscribe />
             </Route>
 
             <Route path="/cart">
               <MainCart />
             </Route>
 
+            <Route path="/checkout">
+              <MainCheckout />
+            </Route>
 
 
           </Switch>
