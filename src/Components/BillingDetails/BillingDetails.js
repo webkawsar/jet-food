@@ -2,10 +2,14 @@ import { Box, Container, Grid, makeStyles, TextField } from '@material-ui/core';
 import React from 'react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import Order from './Order';
 
 
 
 const useStyles = makeStyles({
+    root: {
+        padding: "100px 0"
+    },
     helperText: {
         color: "red"
     }
@@ -28,9 +32,9 @@ const BillingDetails = () => {
 
     const classes = useStyles();
     return (
-        <div>
+        <Box className={classes.root}>
             <Container>
-                <Grid container>
+                <Grid container spacing={5}>
                     <Grid item md={6}>
                         <h3>Billing Details</h3>
                         <Box style={{textAlign: "center"}}>
@@ -136,9 +140,16 @@ const BillingDetails = () => {
                             </form>
                         </Box>
                     </Grid>
+                    <Grid md={6}>
+                        <h3>Your Order</h3>
+                        <Order />
+                    </Grid>
+                    <Grid md={6}>
+                        <h3>Delivery Start Date</h3>
+                    </Grid>
                 </Grid>
             </Container>
-        </div>
+        </Box>
     );
 };
 

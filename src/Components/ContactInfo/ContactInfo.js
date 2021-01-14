@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/styles';
 import React from 'react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import Billing from '../BillingDetails/Billing';
 import BillingDetails from '../BillingDetails/BillingDetails';
 
 
@@ -114,6 +115,7 @@ const ContactInfo = () => {
                     </form>
                 </Box>
 
+                
                 {
                     billingInfo && <BillingDetails />
                 }

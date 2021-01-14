@@ -5,7 +5,7 @@ import { Link, useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles({
     root: {
-      maxWidth: 345
+      
     },
     media: {
       height: 180,

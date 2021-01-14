@@ -24,16 +24,16 @@ const useStyles = makeStyles({
 const Subscribe = () => {
 
     const [categories, setCategories] = useState(fakeData);
-
     const [selectedCategory, setSelectedCategory] = useState(categories[0].id);
-
+    const [activeCatName, setActiveCatName] = useState(categories[0].name)
     const [checked, setChecked] = useState({checked: false});
     const [page, setPage] = useState(0);
-    const [orders, setOrders] = useState([]);
+    const [order, setOrder] = useState({});
     const [options, setOptions] = useState([]);
     const [mealsTime, setMealsTime] = useState("");
     const [days, setDays] = useState(0);
     const { id } = useParams();
+    const [price, setPrice] = useState(categories[0].price);
     
    
 
@@ -52,8 +52,12 @@ const Subscribe = () => {
 
     useEffect(() => {
 
-        console.log("UseEffect");
         
+        // fetch("/")
+        // .then(res => res.json())
+        // .then(result => result)
+
+
         if(id){
             setSelectedCategory(parseInt(id))
         } 
@@ -99,11 +103,12 @@ const Subscribe = () => {
     const handleCategory = (cat) => {
 
         setSelectedCategory(cat.id)
+        setActiveCatName(cat.name)
         setPage(0);
         setOptions([]);
         setMealsTime("");
         setDays(0);
-        
+        setPrice(cat.price)
     }
 
     
@@ -121,19 +126,20 @@ const Subscribe = () => {
             }
 
             const orderData = {
-                    category: selectedCategory,
+
+                    category: activeCatName,
                     period: period,
                     meals: page,
                     mealsTime: mealsTime,
                     days: days,
+                    price: price,
                     optionals: {
                         juice: ""
                     }
     
                 }
             
-            const order = [...orders, orderData]
-            setOrders(order);
+            setOrder({...orderData});
     
         }
 
@@ -145,26 +151,19 @@ const Subscribe = () => {
    const history = useHistory();
     const handleAddToCart = () => {
 
-        console.log("Clicked add to cat button");
+        const orders = [...loggedInUser.orders, order]
         setLoggedInUser({...loggedInUser, orders})
         history.push("/cart")
-        // const data = loggedInUser?.orders;
-        // if(data){
-        //     localStorage.setItem("Orders", data);
-        // }
-
     }
 
-    console.log(loggedInUser);
-    
-
+ 
 
     const classes = useStyles();
     return (
         <div>
             
             <Box className={classes.root}>
-                <Grid container>
+                <Grid container spacing={3}>
                     <Grid item md={8}>
                         <Paper className={classes.paper}>
                             <Box>
@@ -294,10 +293,10 @@ const Subscribe = () => {
                             </Box>
                         </Paper>
                     </Grid>
-                    <Grid item md={4}>
+                    <Grid item xs={12} sm={12} md={4}>
                         <Cart 
                             handleAddToCart={handleAddToCart} 
-                            orders={orders}
+                            order={order}
                         >
                         </Cart>
                     </Grid>

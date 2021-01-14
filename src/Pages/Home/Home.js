@@ -1,4 +1,5 @@
 import React from 'react';
+import Category from '../../Components/Category/Category';
 import DeliverySystem from '../../Components/DeliverySystem/DeliverySystem';
 import Footer from '../../Components/Footer/Footer';
 import Header from '../../Components/Header/Header';
@@ -15,11 +16,12 @@ const Home = () => {
         <div>
             <Header />
             <HeaderMain />
+            <Category heading={"Our Meal Plans"} />
             <OurCredential />
             <DeliverySystem />
             <Review />
             <InfoSubscription />
-            {/* <Footer /> */}
+            
         </div>
     );
 };

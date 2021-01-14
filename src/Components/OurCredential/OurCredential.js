@@ -28,9 +28,10 @@ const OurCredential = () => {
         <Box className={classes.root}>
             <Container>
                 <Box>
+                    <h1 style={{textAlign: "center"}}>Why <span className="highlighter">everyone loves</span> <br/> our?</h1>
                     <Box>
-                        <h1 style={{textAlign: "center"}}>Why <span className="highlighter">everyone loves</span> <br/> our?</h1>
-                        <Grid container spacing={4}>
+                        
+                        <Grid container spacing={5}>
                             <Grid item md={4}>
                                 <Box>
                                     <Box>

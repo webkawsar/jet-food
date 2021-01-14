@@ -8,7 +8,8 @@ import Category from '../Category/Category';
 
 const useStyles = makeStyles({
     root: {
-        padding: "100px 0 0"
+        padding: "100px 0 0",
+        width: "100%"
 
     },
     intro: {
@@ -39,7 +40,7 @@ const HeaderMain = () => {
         <div className={classes.root}>
             <Grid container>
                 <Grid item md={3}>
-                    {/* <h1>{" "}</h1> */}
+                    
                     <img className={`${classes.image} left-image`} src="https://i1.wp.com/jetfuelmeals.com/wp-content/uploads/2020/08/food-header-left-cut.png?fit=437%2C608&ssl=1" alt=""/>
                 </Grid>
                 <Grid xs={12} sm={8} item md={6}>
@@ -50,12 +51,9 @@ const HeaderMain = () => {
                     </Box>
                 </Grid>
                 <Grid sm={4} item md={3}>
-                    {/* <h1>{" "}</h1> */}
                     <img className={`${classes.imageRight} right-image`} src="https://i2.wp.com/jetfuelmeals.com/wp-content/uploads/2020/08/food-header-right-cut.png?fit=430%2C710&ssl=1" alt=""/>
                 </Grid>
-                <Grid sm={4} item md={12}>
-                    <Category></Category>
-                </Grid>
+                
             </Grid>
         </div>
     );

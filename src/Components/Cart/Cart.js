@@ -30,23 +30,21 @@ const useStyles = makeStyles({
 
 
 const Cart = (props) => {
-    const orders = props.orders;
+    const order = props.order;
     const [disabledButton, setDisabledButton] = useState(true);
 
     useEffect(() => {
 
-
-        if(orders.length ){
-
-            // const buttonOne = document.getElementById("buttonOne")
-            // console.log("Button enabled");
-            // buttonOne.disabled = false;
-            setDisabledButton(false)
     
+        if(order.category && order.days && order.meals && order.mealsTime && order.period){
+
+            setDisabledButton(false)
         }
 
 
-    }, [orders])
+    }, [order])
+
+
 
     const history = useHistory();
     const handleViewButton = () => {
@@ -61,16 +59,6 @@ const Cart = (props) => {
                 <Paper className={classes.paper}>
                     <h3 style={{textAlign: "center"}}>Review Your Plan</h3>
                     <Box display="flex" justifyContent="center">
-
-                        {/* <button 
-                            type="button" 
-                            id="buttonOne" 
-                            disabled 
-                            onClick={props.handleAddToCart} 
-                            className={disabledButton ? `${classes.disabled}` : "cartButton" }
-                        >
-                            Add to Cart
-                        </button> */}
 
                         {
                             disabledButton ?

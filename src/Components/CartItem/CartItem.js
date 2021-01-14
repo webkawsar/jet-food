@@ -22,15 +22,16 @@ const useStyles = makeStyles({
 
 })
 
-const CartItem = () => {
+const CartItem = (props) => {
+    const {category, days, meals, mealsTime, period, price} = props.item
+    console.log(props);
 
     const classes = useStyles();
     return (
         <>
 
             <Grid container spacing={3}>
-                <Grid item md={6}>
-
+                <Grid item xs={12} sm={6} md={6}>
                     <Box display="flex" alignItems="center">
                         <Box mr={2}>
                             <IconButton>
@@ -42,22 +43,21 @@ const CartItem = () => {
                                 <img style={{width: "80px"}} src="https://i1.wp.com/jetfuelmeals.com/wp-content/uploads/2019/08/fresh.png?fit=180%2C263&ssl=1" alt=""/>
                             </Link>
                         </Box>
-                        
                         <Box>
-                            <Link className={classes.link} to="/product/id">Maintain</Link>
-                            <h5 className={classes.text}>Period: <strong>Weekly</strong></h5>
-                            <h5 className={classes.text}>Meals per day: <strong>5</strong></h5>
-                            <h5 className={classes.text}>Meals: <strong>Breakfast, Lunch, Lunch, Dinner, Dinner</strong></h5>
+                            <Link className={classes.link} to="/product/id">{category}</Link>
+                            <h5 className={classes.text}>Period: <strong>{period}</strong></h5>
+                            <h5 className={classes.text}>Meals per day: <strong>{days}</strong></h5>
+                            <h5 className={classes.text}>Meals: <strong>{mealsTime}</strong></h5>
+                            <h5 className={classes.text}>Days per week: <strong>{meals}</strong></h5>
                         </Box>
                     </Box>
-
                 </Grid>
-                <Grid item md={2}>
+                <Grid item xs={4} sm={2} md={2}>
                     <Box display="flex" alignItems="center">
-                        <span>$170.00 / week</span>
+                        <span>$ {price} / {period}</span>
                     </Box>
                 </Grid>
-                <Grid item md={2}>
+                <Grid item xs={4} sm={2} md={2}>
                     <TextField
                         type="number"
                         variant="outlined"
@@ -69,8 +69,8 @@ const CartItem = () => {
                         helperText=""
                     />
                 </Grid>
-                <Grid item md={2}>
-                    <span>$170.00 / week</span>
+                <Grid item xs={4} sm={2} md={2}>
+                    <span>$ {price} / {period}</span>
                 </Grid>
             </Grid>
         </>
