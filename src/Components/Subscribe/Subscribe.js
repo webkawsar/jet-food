@@ -8,6 +8,7 @@ import { five, four, one, three, two, zero } from './OptionsData';
 import Cart from '../Cart/Cart';
 import { UserContext } from '../../App';
 import { useHistory, useParams } from 'react-router-dom';
+import { addToDatabaseCart } from '../../utilities/databaseManager';
 
 const useStyles = makeStyles({
     root: {
@@ -34,7 +35,7 @@ const Subscribe = () => {
     const [days, setDays] = useState(0);
     const { id } = useParams();
     const [price, setPrice] = useState(categories[0].price);
-    
+
    
 
     const handleChange = (event) => {
@@ -126,7 +127,7 @@ const Subscribe = () => {
             }
 
             const orderData = {
-
+                    id: selectedCategory,
                     category: activeCatName,
                     period: period,
                     meals: page,
@@ -149,11 +150,23 @@ const Subscribe = () => {
 
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);
    const history = useHistory();
+
+
+
+
+
+   const [products, setProducts] = useState([]);
+   const [cart, setCart] = useState([]);
+   
     const handleAddToCart = () => {
 
         const orders = [...loggedInUser.orders, order]
         setLoggedInUser({...loggedInUser, orders})
         history.push("/cart")
+
+       localStorage.setItem("Order", JSON.stringify(order))
+
+
     }
 
  

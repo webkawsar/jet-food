@@ -14,8 +14,9 @@ const MainCart = () => {
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);
     const [cartItems, setCartItems] = useState([]);
     const [items, setItems] = useState(true)
-
- 
+    const [total, setTotal] = useState(0);
+    const [newMemberSignUpFee, setNewMemberSignUpFee] = useState(6)
+    const [tax, setTax] = useState(0)
 
 
     useEffect(() => {
@@ -24,11 +25,20 @@ const MainCart = () => {
 
             setCartItems(loggedInUser.orders)
             setItems(false)
+
         } else {
             setItems(true)
         }
 
-    }, [loggedInUser])
+        if(cartItems.length){
+
+            const total = cartItems.reduce((total, item) => item.price + total, 0)
+            const paybleTax = total * .15;
+            setTax(Math.floor(paybleTax));
+            setTotal(total)
+        }
+
+    }, [loggedInUser, cartItems])
 
     
 
@@ -66,7 +76,9 @@ const MainCart = () => {
                                 {
                                     items ? <div style={{textAlign: "center", color: "red", fontSize: "30px"}}>Item not found your cart</div>
                                     :
-                                    cartItems.map(item => <CartItem item={item} key={item.category}></CartItem>)
+                                    cartItems.map(item => <CartItem 
+                                        item={item} 
+                                        key={item.category}></CartItem>)
                                 }
                                 
                             </Grid>
@@ -83,7 +95,7 @@ const MainCart = () => {
                             <h5 style={{margin: "0"}}>Subtotal</h5>
                         </Grid>
                         <Grid item xs={8} sm={8} md={8}>
-                            <span>$511.00</span>
+                            <span>$ {total}</span>
                         </Grid>
                     </Grid>
                     <hr/>
@@ -103,7 +115,7 @@ const MainCart = () => {
                             <h5 style={{margin: "0"}}>New Member <br/> Sign Up Fee</h5>
                         </Grid>
                         <Grid item xs={8} sm={8} md={8}>
-                            <span>$6.99</span>
+                            <span>$ {newMemberSignUpFee}</span>
                         </Grid>
                     </Grid>
                     <hr/>
@@ -113,7 +125,7 @@ const MainCart = () => {
                             <h5 style={{margin: "0"}}>Tax</h5>
                         </Grid>
                         <Grid item xs={8} sm={8} md={8}>
-                            <span>$35.77</span>
+                            <span>$ {tax}</span>
                         </Grid>
                     </Grid>
                     <hr/>
@@ -123,7 +135,7 @@ const MainCart = () => {
                             <h5 style={{margin: "0"}}>Total</h5>
                         </Grid>
                         <Grid item xs={8} sm={8} md={8}>
-                            <span>$553.76</span>
+                            <span>$ {total + newMemberSignUpFee + tax}</span>
                         </Grid>
                     </Grid>
                     <hr/>
@@ -133,7 +145,7 @@ const MainCart = () => {
                             <h5 style={{margin: "0"}}>Recurring total</h5>
                         </Grid>
                         <Grid item xs={8} sm={8} md={8}>
-                            <span>$546.77 / week <br/> First renewal: January 19, 2021</span>
+                            <span>$ {total + tax} / week <br/> First renewal: {new Date().toDateString()}</span>
                         </Grid>
                     </Grid>
                     

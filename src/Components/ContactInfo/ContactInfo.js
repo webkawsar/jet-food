@@ -1,8 +1,10 @@
 import { Box, Container, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import React from 'react';
+import { useContext } from 'react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { UserContext } from '../../App';
 import Billing from '../BillingDetails/Billing';
 import BillingDetails from '../BillingDetails/BillingDetails';
 
@@ -17,24 +19,22 @@ const useStyles = makeStyles({
 
 const ContactInfo = () => {
 
-    const [contactInfo, setContactInfo] = useState({})
+    
+    const [loggedInUser, setLoggedInUser] = useContext(UserContext)
     const [billingInfo, setBillingInfo] = useState(false)
     const { register, handleSubmit, errors } = useForm();
     const onSubmit = (data) => {
 
-        setContactInfo(data)
+        setLoggedInUser({...loggedInUser, userData: data})
         setBillingInfo(true)
     }
 
-    if(contactInfo){
-        console.log(contactInfo);
-    }
-
+ 
     const classes = useStyles();
     return (
         <div>
             <Container>
-                <h3>Contact Iinfo</h3>
+                <h3>Contact Info</h3>
                 <Box style={{textAlign: "center"}}>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <TextField

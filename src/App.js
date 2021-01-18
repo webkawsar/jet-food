@@ -16,10 +16,7 @@ export const UserContext = createContext();
 
 function App() {
 
-  const userData = {
-    name: "Kawsar",
-    email: "kawsar@gmail.com"
-  }
+  const userData = {}
 
   const data = {userData, orders: []};
   const [loggedInUser, setLoggedInUser] = useState(data);

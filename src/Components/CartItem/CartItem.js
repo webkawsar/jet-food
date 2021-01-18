@@ -24,7 +24,10 @@ const useStyles = makeStyles({
 
 const CartItem = (props) => {
     const {category, days, meals, mealsTime, period, price} = props.item
-    console.log(props);
+   
+ 
+
+
 
     const classes = useStyles();
     return (
