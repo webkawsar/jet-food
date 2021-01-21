@@ -1,7 +1,8 @@
 import { Box, Grid, IconButton, makeStyles, TextField } from '@material-ui/core';
 import { Cancel } from '@material-ui/icons';
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { UserContext } from '../../App';
 
 
 const useStyles = makeStyles({
@@ -23,11 +24,27 @@ const useStyles = makeStyles({
 })
 
 const CartItem = (props) => {
-    const {category, days, meals, mealsTime, period, price} = props.item
-   
- 
+    const {id, category, days, meals, mealsTime, period, price, qty} = props.item;
+    const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+    
 
+    const handleChangeQty = (e) => {
 
+        if(e.target.value > 0) {
+
+            const orderIndex = loggedInUser.orders.findIndex(order => order.id === id )
+            if(orderIndex !== -1){
+                
+                let newOrders = [...loggedInUser.orders]
+                newOrders[orderIndex] = {...newOrders[orderIndex], qty: parseInt(e.target.value)}
+
+                setLoggedInUser({...loggedInUser, orders: newOrders})
+            }
+        }
+    }
+
+    
+    
 
     const classes = useStyles();
     return (
@@ -37,7 +54,7 @@ const CartItem = (props) => {
                 <Grid item xs={12} sm={6} md={6}>
                     <Box display="flex" alignItems="center">
                         <Box mr={2}>
-                            <IconButton>
+                            <IconButton onClick={() => props.handleRemoveCartItem(id)}>
                                 <Cancel></Cancel>
                             </IconButton>
                         </Box>
@@ -49,9 +66,9 @@ const CartItem = (props) => {
                         <Box>
                             <Link className={classes.link} to="/product/id">{category}</Link>
                             <h5 className={classes.text}>Period: <strong>{period}</strong></h5>
-                            <h5 className={classes.text}>Meals per day: <strong>{days}</strong></h5>
+                            <h5 className={classes.text}>Meals per day: <strong>{meals}</strong></h5>
                             <h5 className={classes.text}>Meals: <strong>{mealsTime}</strong></h5>
-                            <h5 className={classes.text}>Days per week: <strong>{meals}</strong></h5>
+                            <h5 className={classes.text}>Days per week: <strong>{days}</strong></h5>
                         </Box>
                     </Box>
                 </Grid>
@@ -64,16 +81,17 @@ const CartItem = (props) => {
                     <TextField
                         type="number"
                         variant="outlined"
-                        defaultValue="1"
+                        defaultValue={qty}
                         id="qty"
                         name="qty"
                         required
                         size="small"
                         helperText=""
+                        onChange={handleChangeQty}
                     />
                 </Grid>
                 <Grid item xs={4} sm={2} md={2}>
-                    <span>$ {price} / {period}</span>
+                    <span>$ {(qty * price)} / {period}</span>
                 </Grid>
             </Grid>
         </>

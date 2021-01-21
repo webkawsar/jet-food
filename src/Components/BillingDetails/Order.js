@@ -40,7 +40,7 @@ const Order = () => {
     useEffect(() => {
 
         
-        const total = items.reduce((total, item) => item.price + total, 0)
+        const total = items.reduce((total, item) => (item.price * item.qty) + total, 0)
         const payableTax = total * 0.15;
         setTax(Math.round(payableTax))
         setTotal(total);
@@ -56,8 +56,7 @@ const Order = () => {
         setLoggedInUser({...loggedInUser, cardInfo: card})
     }
 
-    console.log(loggedInUser);
-    console.log(card);
+
 
     const classes = useStyles();
     return (
@@ -74,8 +73,8 @@ const Order = () => {
                             {
                                 items.map(item => <Box key={item.id}>
                                                     <Box display="flex" justifyContent="space-between">
-                                                        <h5 style={{fontWeight: "normal", margin: "0"}}> <strong>{item.category}</strong> X <strong> 1 </strong> X <strong> {item.mealsTime} </strong> X <strong> {item.days} days</strong></h5>
-                                                        <h5 style={{margin: "0", fontWeight: "normal"}}><strong>$ {item.price}</strong> / <strong>{item.period}</strong></h5>
+                                                        <h5 style={{fontWeight: "normal", margin: "0"}}> <strong>{item.category}</strong> X <strong> {item.qty} </strong> X <strong> {item.mealsTime} </strong> X <strong> {item.days} days</strong></h5>
+                                                        <h5 style={{margin: "0", fontWeight: "normal"}}><strong>$ {(item.price * item.qty)}</strong> / <strong>{item.period}</strong></h5>
                                                     </Box>
                                                     <hr/>
 
@@ -114,7 +113,7 @@ const Order = () => {
 
                             <Box display="flex" justifyContent="space-between">
                                 <h4 style={{margin: "0"}}>Recurring total</h4>
-                                <h4 style={{margin: "0"}}>${total + tax} / month</h4>
+                                <h4 style={{margin: "0"}}>${total + tax}</h4>
                             </Box>
                             <hr/>
                             

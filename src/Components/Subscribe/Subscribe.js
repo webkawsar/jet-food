@@ -134,6 +134,7 @@ const Subscribe = () => {
                     mealsTime: mealsTime,
                     days: days,
                     price: price,
+                    qty: 1,
                     optionals: {
                         juice: ""
                     }
@@ -164,7 +165,7 @@ const Subscribe = () => {
         setLoggedInUser({...loggedInUser, orders})
         history.push("/cart")
 
-       localStorage.setItem("Order", JSON.stringify(order))
+    //    localStorage.setItem("Order", JSON.stringify(order))
 
 
     }

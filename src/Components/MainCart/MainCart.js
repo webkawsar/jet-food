@@ -2,7 +2,6 @@ import { Box, Container, Grid } from '@material-ui/core';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../../App';
-import fakeData from '../../FakeData/FakeData';
 import CartHeader from '../CartHeader/CartHeader';
 import CartItem from '../CartItem/CartItem';
 import Header from '../Header/Header';
@@ -24,23 +23,47 @@ const MainCart = () => {
         if(loggedInUser.orders.length){
 
             setCartItems(loggedInUser.orders)
-            setItems(false)
+            setItems(false);
+            
 
         } else {
-            setItems(true)
+
+            setItems(true);
+            setTax(0);
+            setTotal(0);
         }
 
         if(cartItems.length){
 
-            const total = cartItems.reduce((total, item) => item.price + total, 0)
+            const total = cartItems.reduce((total, item) => (item.price * item.qty) + total, 0)
             const paybleTax = total * .15;
             setTax(Math.floor(paybleTax));
             setTotal(total)
+
+        } else {
+            setItems(true);
+            setTax(0);
+            setTotal(0);
         }
+
+        
 
     }, [loggedInUser, cartItems])
 
-    
+
+
+
+    const handleRemoveCartItem = (removeId) => {
+
+        const items = cartItems.filter(item => item.id !== removeId)
+        const newUserData = {...loggedInUser}
+        newUserData.orders = items
+        setLoggedInUser(newUserData)
+        setCartItems(items)
+        setItems(false)
+    }
+
+  
 
 
     return (
@@ -78,7 +101,11 @@ const MainCart = () => {
                                     :
                                     cartItems.map(item => <CartItem 
                                         item={item} 
-                                        key={item.category}></CartItem>)
+                                        key={item.id}
+                                        handleRemoveCartItem={handleRemoveCartItem}
+                                        >
+
+                                        </CartItem>)
                                 }
                                 
                             </Grid>

@@ -5,7 +5,6 @@ import { useContext } from 'react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { UserContext } from '../../App';
-import Billing from '../BillingDetails/Billing';
 import BillingDetails from '../BillingDetails/BillingDetails';
 
 
@@ -25,14 +24,16 @@ const ContactInfo = () => {
     const { register, handleSubmit, errors } = useForm();
     const onSubmit = (data) => {
 
-        setLoggedInUser({...loggedInUser, userData: data})
+        setLoggedInUser({...loggedInUser, userData: {contactInfo: data}})
         setBillingInfo(true)
     }
+
+  
 
  
     const classes = useStyles();
     return (
-        <div>
+        <>
             <Container>
                 <h3>Contact Info</h3>
                 <Box style={{textAlign: "center"}}>
@@ -114,13 +115,13 @@ const ContactInfo = () => {
                         <button style={{marginTop: "50px"}} className="mainButton" type="submit">Next</button>
                     </form>
                 </Box>
-
-                
-                {
-                    billingInfo && <BillingDetails />
-                }
+                <Box>
+                    {
+                        billingInfo && <BillingDetails />
+                    }
+                </Box>
             </Container>
-        </div>
+        </>
     );
 };
 
