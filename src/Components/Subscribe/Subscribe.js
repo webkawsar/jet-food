@@ -8,7 +8,6 @@ import { five, four, one, three, two, zero } from './OptionsData';
 import Cart from '../Cart/Cart';
 import { UserContext } from '../../App';
 import { useHistory, useParams } from 'react-router-dom';
-import { addToDatabaseCart } from '../../utilities/databaseManager';
 
 const useStyles = makeStyles({
     root: {

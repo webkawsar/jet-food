@@ -57,7 +57,7 @@ const BillingDetails = () => {
 
     }, [loggedInUser, items])
 
-    
+    console.log(loggedInUser);
 
     const classes = useStyles();
     return (

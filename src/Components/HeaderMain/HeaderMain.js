@@ -2,8 +2,6 @@ import { Box, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Category from '../Category/Category';
-
 
 
 const useStyles = makeStyles({

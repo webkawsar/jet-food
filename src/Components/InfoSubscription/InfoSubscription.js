@@ -1,22 +1,33 @@
 import { Box, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 
 
 const useStyles = makeStyles({
     root: {
-        padding: "50px 0 100px"
+        padding: "50px 0"
     },
     email: {
         width: "400px",
-
     }
+
+
 })
 
 
 const InfoSubscription = () => {
+    const [email, setEmail] = useState("");
+    const handleSubmit = (event) => {
+        event.preventDefault();
+    }
+
+    const handleChange = (event) => {
+
+        setEmail(event.target.value)
+    }
+
 
 
     const classes = useStyles()
@@ -28,19 +39,22 @@ const InfoSubscription = () => {
                     <p>Get $15 off, and receive the latest recipes by <Link to="/subscribe" className="highlighter">subscribing now!</Link></p>
                 </Box>
                 <Box textAlign="center">
-                    <form>
+                    <form onSubmit={handleSubmit}>
+
                         <TextField 
                             type="email"
                             margin="normal"
                             id="email"
-                            
+                            defaultValue={email}
+                            onChange={handleChange}
                             name="email"
                             label="Email"
                             variant="outlined"
                             className={classes.email}
                         />
+                        
                         <br/>
-                        <button className="mainButton">Sign Up</button>
+                        <button type="submit" className="mainButton">Sign Up</button>
                     </form>
                 </Box>
             </Box>

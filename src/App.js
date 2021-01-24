@@ -5,7 +5,8 @@ import MainCart from './Components/MainCart/MainCart';
 import Home from './Pages/Home/Home';
 import MainSubscribe from './Pages/MainSubscribe/MainSubscribe';
 import MainCheckout from './Pages/MainCheckout/MainCheckout';
-import CategoryDetails from './Pages/CategoryDetails/CategoryDetails';
+import { Details } from '@material-ui/icons';
+import ProductDetails from './Pages/ProductDetails/ProductDetails';
 
 
 
@@ -38,8 +39,8 @@ function App() {
               <Home />
             </Route>
 
-            <Route path="/foodcat/:id">
-              <CategoryDetails />
+            <Route path="/prod/:id">
+              <ProductDetails />
             </Route>
 
             <Route path="/subscribe/:id?">
