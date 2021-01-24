@@ -1,12 +1,12 @@
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { createContext, useState } from 'react';
-import MainCart from './Components/MainCart/MainCart';
 import Home from './Pages/Home/Home';
 import MainSubscribe from './Pages/MainSubscribe/MainSubscribe';
 import MainCheckout from './Pages/MainCheckout/MainCheckout';
 import { Details } from '@material-ui/icons';
 import ProductDetails from './Pages/ProductDetails/ProductDetails';
+import MainCart from './Pages/MainCart/MainCart';
 
 
 

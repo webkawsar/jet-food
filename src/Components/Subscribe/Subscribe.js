@@ -5,9 +5,13 @@ import fakeData from '../../FakeData/FakeData';
 import Pagination from '@material-ui/lab/Pagination';
 import SubscribeCategory from '../SubscribeCategory/SubscribeCategory';
 import { five, four, one, three, two, zero } from './OptionsData';
-import Cart from '../Cart/Cart';
 import { UserContext } from '../../App';
 import { useHistory, useParams } from 'react-router-dom';
+import SubscribeCart from '../SubscribeCart/SubscribeCart';
+
+
+
+
 
 const useStyles = makeStyles({
     root: {
@@ -307,11 +311,11 @@ const Subscribe = () => {
                         </Paper>
                     </Grid>
                     <Grid item xs={12} sm={12} md={4}>
-                        <Cart 
+                        <SubscribeCart 
                             handleAddToCart={handleAddToCart} 
                             order={order}
                         >
-                        </Cart>
+                        </SubscribeCart>
                     </Grid>
                 </Grid>
             </Box>
