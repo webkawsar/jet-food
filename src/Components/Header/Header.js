@@ -1,23 +1,42 @@
-import React from 'react';
-
-
-
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import "../../Assets/css/animate.css";
 //Added Styles
 import "../../Assets/css/bootstrap.css";
-import "../../Assets/css/swiper.css";
 import "../../Assets/css/dark.css";
 import "../../Assets/css/font-icons.css";
-import "../../Assets/css/animate.css";
 import "../../Assets/css/magnific-popup.css";
-import "../../Assets/style.css";
-
+import "../../Assets/css/swiper.css";
 import logo1 from "../../Assets/images/main-logo.svg";
+import "../../Assets/style.css";
+import fakeData from '../../FakeData/FakeData';
 
 
+
+
+
+const healthProd = [
+    {
+        id: 101,
+        name: "Product-1",
+    },
+    {
+        id: 102,
+        name: "Product-2",
+    },
+
+]
 
 
 
 const Header = () => {
+
+	const [products, setProducts] = useState(fakeData);
+	const [healthProducts, setHealthProducts] = useState(healthProd);
+
+
+
+	
     return (
 		<div className="stretched">
 			<div id="wrapper" className="clearfix">
@@ -33,6 +52,14 @@ const Header = () => {
 									<a href="/home" className="retina-logo" data-dark-logo="https://i.ibb.co/5YS9zft/Group-86.png">
 										<img src={logo1} alt="Canvas Logo" />
 									</a>
+									
+									{/* <Link className="retina-logo" to="/home" data-dark-logo="https://i.ibb.co/5YS9zft/Group-86.png">
+										<img src={logo1} alt="Canvas Logo" />
+									</Link>
+									<Link className="standard-logo" to="/home" data-dark-logo="https://i.ibb.co/5YS9zft/Group-86.png">
+										<img src={logo1} alt="Canvas Logo" />
+									</Link> */}
+
 								</div>
 
 								<div id="primary-menu-trigger">
@@ -45,64 +72,39 @@ const Header = () => {
 								<nav className="primary-menu">
 									<ul className="menu-container">
 										<li className="menu-item">
-											<a className="menu-link" href="/home"><div>Home</div></a>
+											<Link className="menu-link" to="/home"><div>Home</div></Link>
 										</li>
 										<li className="menu-item">
-											<a className="menu-link" href="/home"><div>MEAL PLANS</div></a>
+											<Link className="menu-link" to="/home"><div>MEAL PLANS</div></Link>
 											<ul className="sub-menu-container">
-												<li className="menu-item">
-													<a className="menu-link" href="/home">
-														<div>MAINTAIN MEAL PLAN</div>
-													</a>
-												</li>
-												<li className="menu-item">
-													<a className="menu-link" href="/home">
-														<div>KETO MEAL PLAN</div>
-													</a>
-												</li>
-												<li className="menu-item">
-													<a className="menu-link" href="/home">
-														<div>ATHLETIC MEAL PLAN</div>
-													</a>
-												</li>
-												<li className="menu-item">
-													<a className="menu-link" href="/home">
-														<div>PLANT BASED MEAL PLAN</div>
-													</a>
-												</li>
-												<li className="menu-item">
-													<a className="menu-link" href="/home">
-														<div>PESCATARIAN MEAL PLAN</div>
-													</a>
-												</li>
-												<li className="menu-item">
-													<a className="menu-link" href="/home">
-														<div>KID’S MEAL PLAN</div>
-													</a>
-												</li>
+												{
+													products.map(product => <li className="menu-item">
+																				<Link className="menu-link" to={`/prod/${product.id}`}>
+																					<div> { product.name }  Meal Plan</div>
+																				</Link>
+																			</li>)
+												}
 											</ul>
 										</li>
+
 										<li className="menu-item">
-											<a className="menu-link" href="/home"><div>MENU & PRICING</div></a>
-											<ul className="sub-menu-container">
-												<li className="menu-item">
-													<a className="menu-link" href="/home"><div>COLD PRESS JUICES</div></a>
-												</li>
-												<li className="menu-item">
-													<a className="menu-link" href="/home"><div>MIAMI</div></a>
-												</li>
-												
-											</ul>
+											<Link className="menu-link" to="/pricing"><div>MENU & PRICING</div></Link>
 										</li>
+
+
+										
 										<li className="menu-item">
-											<a className="menu-link" href="/home"><div>HEALTH SHOTS</div></a>
+											<Link className="menu-link" to="/health"><div>HEALTH SHOTS</div></Link>
+											
 											<ul className="sub-menu-container">
-												<li className="menu-item">
-													<a className="menu-link" href="/home"><div>Sliders</div></a>
-												</li>
-												<li className="menu-item">
-													<a className="menu-link" href="/home"><div>HEALTH SHOTS</div></a>
-												</li>
+												{
+													healthProducts.map(healthProd => 	<li className="menu-item">
+																							<Link className="menu-link" to={`/health/prod/${healthProd.id}`}>
+																								<div> { healthProd.name } </div>
+																							</Link>
+																						</li>)
+												}
+
 												
 											</ul>
 										</li>

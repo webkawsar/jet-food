@@ -16,9 +16,17 @@ const useStyles = makeStyles({
   });
 
 const SingleProduct = (props) => {
-    const { id, name, catDeatils, img } = props.product;
+    const { id, name, prodDetails, img } = props.product;
     const { location } = useHistory();
+    const history = useHistory();
 
+
+    
+    const handleClick = () => {
+
+        history.push(`/prod/${id}`);
+    }
+    
 
 
     const classes = useStyles();
@@ -26,11 +34,11 @@ const SingleProduct = (props) => {
             <>
                 <Grid item xs={12} sm={6} md={4} lg={3}>
                     <Card className={classes.root}>
-                        <CardActionArea>
+                        <CardActionArea onClick={handleClick}>
                             <CardMedia
-                            className={classes.media}
-                            image={img}
-                            title="Contemplative Reptile"
+                                className={classes.media}
+                                image={img}
+                                title="Contemplative Reptile"
                             />
                             <CardContent>
                             <Typography gutterBottom variant="h5" component="h2">
@@ -41,7 +49,7 @@ const SingleProduct = (props) => {
                                 location.pathname === "/" || location.pathname === "/home" ? 
 
                                 <Typography variant="body2" color="textSecondary" component="p">
-                                    {catDeatils}
+                                    {prodDetails}
                                 </Typography>
                                 :
                                 <Typography variant="body2" color="textSecondary" component="p">
@@ -51,9 +59,15 @@ const SingleProduct = (props) => {
 
                             </CardContent>
                         </CardActionArea>
-                        <CardActions>
-                            <Link to={`/prod/${id}`}>Details</Link>
-                        </CardActions>
+                        {
+                            location.pathname === "/" || location.pathname === "/home" ?
+                            
+                            <CardActions>
+                                <Link to={`/prod/${id}`}>Details</Link>
+                            </CardActions>
+                            :
+                            ""
+                        }
                     </Card>
                 </Grid>
             </>
