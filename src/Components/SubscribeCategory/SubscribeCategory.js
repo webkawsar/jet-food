@@ -33,28 +33,29 @@ const useStyles = makeStyles({
 
 const SubscribeCategory = (props) => {
     const classes = useStyles();
-    const { id, name, img } = props.category;
+    const { _id, title, image } = props.category;
     const selected = props.selectedCategory;
     
 
     let active = "";
-    if(id === selected){
+    if(_id === selected){
 
         active = `${classes.default}`
 
     }
 
-    
+  
+
     return (
         <>
             <Grid item xs={4} sm={3} md={2} >
                 <Box className={`${classes.box} ${active}`} onClick={() => props.handleCategory(props.category)}>
-                    <Link to={ `/subscribe/${id}`}>
+                    <Link to={ `/subscribe/${_id}`}>
                         <Box style={{textAlign: "center"}}>
-                            <img style={{borderRadius: "6px", maxHeight: "120px"}} src={img} alt=""/>
+                            <img style={{borderRadius: "6px", height: "120px"}} src={`http://localhost:5000/images/${image}`} alt=""/>
                         </Box>
                         <Box>
-                            <h5 style={{textAlign: "center", margin: "12px 0 0 0"}}>{name}</h5>
+                            <h5 style={{textAlign: "center", margin: "12px 0 0 0"}}>{title}</h5>
                         </Box>
                     </Link>
                 </Box>

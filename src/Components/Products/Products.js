@@ -1,5 +1,5 @@
 import { Container, Grid, makeStyles } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SingleProduct from '../SingleProduct/SingleProduct';
 
 
@@ -18,9 +18,14 @@ const useStyles = makeStyles({
   });
 
 const Products = ({heading, allProducts}) => {
-    const [products, setProducts] = useState(allProducts);
+  const [products, setProducts] = useState([]);
 
+  useEffect(() => {
 
+    setProducts(allProducts);
+  }, [allProducts])
+    
+    
     const classes = useStyles();
     return (
 
@@ -29,7 +34,7 @@ const Products = ({heading, allProducts}) => {
             <Grid container spacing={4}>
 
                 {
-                    products.map(product => <SingleProduct key={product.id} product={product} />)
+                    products.map(product => <SingleProduct key={product._id} product={product} />)
                 }
 
             </Grid>

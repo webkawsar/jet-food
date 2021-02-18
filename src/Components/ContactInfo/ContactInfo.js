@@ -1,8 +1,6 @@
 import { Box, Container, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import React from 'react';
-import { useContext } from 'react';
-import { useState } from 'react';
+import React, { memo, useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { UserContext } from '../../App';
 import BillingDetails from '../BillingDetails/BillingDetails';
@@ -18,7 +16,6 @@ const useStyles = makeStyles({
 
 const ContactInfo = () => {
 
-    
     const [loggedInUser, setLoggedInUser] = useContext(UserContext)
     const [billingInfo, setBillingInfo] = useState(false)
     const { register, handleSubmit, errors } = useForm();
@@ -26,9 +23,8 @@ const ContactInfo = () => {
 
         setLoggedInUser({...loggedInUser, userData: {contactInfo: data}})
         setBillingInfo(true)
+        window.scroll({top: 700, left: 0, behavior: 'smooth'})
     }
-
-  
 
  
     const classes = useStyles();
@@ -45,15 +41,15 @@ const ContactInfo = () => {
                             margin="normal"
                             type="text"
                             fullWidth
-                            name="firstName"
-                            id="firstName"
+                            name="firstname"
+                            id="firstname"
                             variant="outlined"
                             label="First Name"
                             // className={classes.input}
                             FormHelperTextProps={{
                                 className: classes.helperText,
                             }}
-                            helperText={errors.firstName && errors.firstName.message}
+                            helperText={errors.firstname && errors.firstname.message}
                         />
 
                         <TextField
@@ -63,15 +59,15 @@ const ContactInfo = () => {
                             margin="normal"
                             type="text"
                             fullWidth
-                            name="lastName"
-                            id="lastName"
+                            name="lastname"
+                            id="lastname"
                             variant="outlined"
                             label="Last Name"
                             // className={classes.input}
                             FormHelperTextProps={{
                                 className: classes.helperText,
                             }}
-                            helperText={errors.lastName && errors.lastName.message}
+                            helperText={errors.lastname && errors.lastname.message}
                         />
 
 
@@ -95,20 +91,38 @@ const ContactInfo = () => {
 
                         <TextField
                             inputRef={register({
+                                required: "Password is required",
+                            })}
+                            margin="normal"
+                            type="password"
+                            fullWidth
+                            name="password"
+                            id="password"
+                            variant="outlined"
+                            label="Password"
+                            // className={classes.input}
+                            FormHelperTextProps={{
+                                className: classes.helperText,
+                            }}
+                            helperText={errors.password && errors.password.message}
+                        />
+
+                        <TextField
+                            inputRef={register({
                                 required: "Phone number is required",
                             })}
                             margin="normal"
                             type="number"
                             fullWidth
-                            name="number"
-                            id="number"
+                            name="phone"
+                            id="phone"
                             variant="outlined"
                             label="Phone"
                             // className={classes.input}
                             FormHelperTextProps={{
                                 className: classes.helperText,
                             }}
-                            helperText={errors.number && errors.number.message}
+                            helperText={errors.phone && errors.phone.message}
                         />
 
 
@@ -125,4 +139,4 @@ const ContactInfo = () => {
     );
 };
 
-export default ContactInfo;
+export default memo(ContactInfo);

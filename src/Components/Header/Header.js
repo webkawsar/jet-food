@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import "../../Assets/css/animate.css";
 //Added Styles
 import "../../Assets/css/bootstrap.css";
@@ -9,7 +9,6 @@ import "../../Assets/css/magnific-popup.css";
 import "../../Assets/css/swiper.css";
 import logo1 from "../../Assets/images/main-logo.svg";
 import "../../Assets/style.css";
-import fakeData from '../../FakeData/FakeData';
 
 
 
@@ -31,10 +30,20 @@ const healthProd = [
 
 const Header = () => {
 
-	const [products, setProducts] = useState(fakeData);
+	const { location } = useHistory();
+	const [products, setProducts] = useState([]);
 	const [healthProducts, setHealthProducts] = useState(healthProd);
 
+   
 
+    
+    useEffect(() => {
+
+        fetch("http://localhost:5000/api/v1/products")
+        .then(response => response.json())
+        .then(result => setProducts(result))
+
+    }, [])
 
 	
     return (
@@ -46,20 +55,12 @@ const Header = () => {
 							<div className="header-row">
 
 								<div id="logo">
-									<a href="/home" className="standard-logo" data-dark-logo="https://i.ibb.co/5YS9zft/Group-86.png">
-										<img src={logo1} alt="Canvas Logo" />
-									</a>
-									<a href="/home" className="retina-logo" data-dark-logo="https://i.ibb.co/5YS9zft/Group-86.png">
-										<img src={logo1} alt="Canvas Logo" />
-									</a>
-									
-									{/* <Link className="retina-logo" to="/home" data-dark-logo="https://i.ibb.co/5YS9zft/Group-86.png">
+									<Link className="retina-logo" to="/" data-dark-logo="https://i.ibb.co/5YS9zft/Group-86.png">
 										<img src={logo1} alt="Canvas Logo" />
 									</Link>
-									<Link className="standard-logo" to="/home" data-dark-logo="https://i.ibb.co/5YS9zft/Group-86.png">
+									<Link className="standard-logo" to="/" data-dark-logo="https://i.ibb.co/5YS9zft/Group-86.png">
 										<img src={logo1} alt="Canvas Logo" />
-									</Link> */}
-
+									</Link>
 								</div>
 
 								<div id="primary-menu-trigger">
@@ -78,9 +79,9 @@ const Header = () => {
 											<Link className="menu-link" to="/home"><div>MEAL PLANS</div></Link>
 											<ul className="sub-menu-container">
 												{
-													products.map(product => <li className="menu-item">
-																				<Link className="menu-link" to={`/prod/${product.id}`}>
-																					<div> { product.name }  Meal Plan</div>
+													products.map(product => <li key={product._id} className="menu-item">
+																				<Link className="menu-link" to={`/prod/${product._id}`}>
+																					<div> { product.title }  Meal Plan</div>
 																				</Link>
 																			</li>)
 												}
@@ -91,14 +92,12 @@ const Header = () => {
 											<Link className="menu-link" to="/pricing"><div>MENU & PRICING</div></Link>
 										</li>
 
-
-										
 										<li className="menu-item">
 											<Link className="menu-link" to="/health"><div>HEALTH SHOTS</div></Link>
 											
 											<ul className="sub-menu-container">
 												{
-													healthProducts.map(healthProd => 	<li className="menu-item">
+													healthProducts.map(healthProd => 	<li key={healthProd.id} className="menu-item">
 																							<Link className="menu-link" to={`/health/prod/${healthProd.id}`}>
 																								<div> { healthProd.name } </div>
 																							</Link>
@@ -116,7 +115,20 @@ const Header = () => {
 												</li>
 											</ul>
 										</li>
+										{
+											location.pathname === "/login" ?
+											<li className="menu-item">
+												<Link className="menu-link" to="/register"><div>Register</div></Link>
+											</li>
+											:
+											<li className="menu-item">
+												<Link className="menu-link" to="/login"><div>Login</div></Link>
+											</li>
+										}
 										
+										<li className="menu-item">
+											<Link className="menu-link" to="/profile"><div>Profile</div></Link>
+										</li>
 									</ul>
 								</nav>
 							</div>

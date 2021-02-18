@@ -17,6 +17,7 @@ const Cart = () => {
     const [tax, setTax] = useState(0)
 
 
+
     useEffect(() => {
 
         if(loggedInUser.orders.length){
@@ -53,6 +54,20 @@ const Cart = () => {
 
 
     const handleRemoveCartItem = (removeId) => {
+
+
+        // const index = cartItems.findIndex((item) => item.id === removeId);
+        // let newCartItems = [...cartItems];
+
+        // if(index >= 0){
+
+        //     newCartItems.splice(index, 1);
+        //     setLoggedInUser(newCartItems)
+        //     setCartItems(items)
+        //     setItems(false)
+        // }
+
+
 
         const items = cartItems.filter(item => item.id !== removeId)
         const newUserData = {...loggedInUser}
@@ -95,13 +110,13 @@ const Cart = () => {
                                 {
                                     items ? <div style={{textAlign: "center", color: "red", fontSize: "30px"}}>Item not found your cart</div>
                                     :
-                                    cartItems.map(item => <CartItem 
-                                        item={item} 
-                                        key={item.id}
-                                        handleRemoveCartItem={handleRemoveCartItem}
-                                        >
+                                    cartItems.map((item, index) => <CartItem 
+                                                                        item={item} 
+                                                                        key={index}
+                                                                        handleRemoveCartItem={handleRemoveCartItem}
+                                                                        >
 
-                                        </CartItem>)
+                                                                    </CartItem>)
                                 }
                                 
                             </Grid>

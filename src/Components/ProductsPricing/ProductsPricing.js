@@ -4,9 +4,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import PropTypes from "prop-types";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import fakeData from '../../FakeData/FakeData';
 
 
 
@@ -26,18 +25,26 @@ const useStyles = makeStyles((theme) => ({
 
 const ProductsPricing = () => {
     
-    const [products, setProducts] = useState(fakeData);
+    const [products, setProducts] = useState([]);
     const [value, setValue] = useState(0);
 
     
     const handleChange = (event, newValue) => {
 
-        console.log(newValue);
         setValue(newValue);
     };
 
 
-    
+    useEffect(() => {
+
+        fetch("http://localhost:5000/api/v1/products")
+        .then(response => response.json())
+        .then(result => setProducts(result))
+
+    }, [])
+
+
+    console.log(products);
     const classes = useStyles();
     return (
         <div className={classes.root}>
@@ -54,7 +61,7 @@ const ProductsPricing = () => {
                 >
 
                     {
-                        products.map(product => <Tab key={product.id} label={product.name}  {...a11yProps(product.id)} />)
+                        products.map(product => <Tab key={product._id} label={product.title}  {...a11yProps(product._id)} />)
                     }
 
 
@@ -62,14 +69,15 @@ const ProductsPricing = () => {
             </AppBar>
 
             {
-                products.map((product, index) =>    <TabPanel key={product.id} value={value} index={index}>
+                products.map((product, index) =>    <TabPanel key={product._id} value={value} index={index}>
                                                         {/* { product.price } { product.prodDetails } */}
                                                         <Grid container>
                                                             <Grid item md={6}>
-                                                                <img src={product.img} alt=""/>
+                                                                
+                                                                <img style={{width: "100%"}} src={`http://localhost:5000/images/${product.image}`} alt=""/>
                                                             </Grid>
                                                             <Grid item md={6}>
-                                                                <h2 style={{textAlign: "center"}}>{ product.name } Meal Plan Pricing</h2>
+                                                                <h2 style={{textAlign: "center"}}>{ product.title } Meal Plan Pricing</h2>
 
                                                                 <Box style={{textAlign: "center", marginBottom: "25px"}}>
                                                                     <h3 style={{margin: "0"}}>1 Meal Per Day : $57.50/weekly</h3>

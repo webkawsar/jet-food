@@ -1,6 +1,6 @@
 import { Box, Grid, IconButton, makeStyles, TextField } from '@material-ui/core';
 import { Cancel } from '@material-ui/icons';
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../../App';
 
@@ -24,7 +24,7 @@ const useStyles = makeStyles({
 })
 
 const CartItem = (props) => {
-    const {id, category, days, meals, mealsTime, period, price, qty} = props.item;
+    const {id, title, days, meals, mealsTime, period, price, qty} = props.item;
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);
     
 
@@ -44,7 +44,7 @@ const CartItem = (props) => {
     }
 
     
-    
+    console.log(loggedInUser);
 
     const classes = useStyles();
     return (
@@ -64,7 +64,7 @@ const CartItem = (props) => {
                             </Link>
                         </Box>
                         <Box>
-                            <Link className={classes.link} to="/product/id">{category}</Link>
+                            <Link className={classes.link} to="/product/id">{title}</Link>
                             <h5 className={classes.text}>Period: <strong>{period}</strong></h5>
                             <h5 className={classes.text}>Meals per day: <strong>{meals}</strong></h5>
                             <h5 className={classes.text}>Meals: <strong>{mealsTime}</strong></h5>

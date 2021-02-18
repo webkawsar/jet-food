@@ -16,7 +16,7 @@ const useStyles = makeStyles({
   });
 
 const SingleProduct = (props) => {
-    const { id, name, prodDetails, img } = props.product;
+    const { _id, title, description, image } = props.product;
     const { location } = useHistory();
     const history = useHistory();
 
@@ -24,11 +24,11 @@ const SingleProduct = (props) => {
     
     const handleClick = () => {
 
-        history.push(`/prod/${id}`);
+        history.push(`/prod/${_id}`);
     }
     
 
-
+    
     const classes = useStyles();
     return (
             <>
@@ -37,19 +37,19 @@ const SingleProduct = (props) => {
                         <CardActionArea onClick={handleClick}>
                             <CardMedia
                                 className={classes.media}
-                                image={img}
+                                image={`http://localhost:5000/images/${image}`}
                                 title="Contemplative Reptile"
                             />
                             <CardContent>
                             <Typography gutterBottom variant="h5" component="h2">
-                                {name}
+                                {title}
                             </Typography>
 
                             {
                                 location.pathname === "/" || location.pathname === "/home" ? 
 
                                 <Typography variant="body2" color="textSecondary" component="p">
-                                    {prodDetails}
+                                    {description}
                                 </Typography>
                                 :
                                 <Typography variant="body2" color="textSecondary" component="p">
@@ -63,7 +63,7 @@ const SingleProduct = (props) => {
                             location.pathname === "/" || location.pathname === "/home" ?
                             
                             <CardActions>
-                                <Link to={`/prod/${id}`}>Details</Link>
+                                <Link to={`/prod/${_id}`}>Details</Link>
                             </CardActions>
                             :
                             ""

@@ -1,27 +1,24 @@
 import { Box } from '@material-ui/core';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Products from '../Products/Products';
 
 
 
 
-const pd = [
-    {
-        id: 101,
-        name: "Product-1",
-        img: "https://i1.wp.com/jetfuelmeals.com/wp-content/uploads/2020/04/wellness-shot-trans-backgorund.png?w=339&ssl=1",
-    },
-    {
-        id: 102,
-        name: "Product-2",
-        img: "https://i1.wp.com/jetfuelmeals.com/wp-content/uploads/2020/04/immunity-shot-trans-background.png?w=318&ssl=1"
-    },
-]
 
 
 const HealthProducts = () => {
-    const [products, setProducts] = useState(pd);
+    const [products, setProducts] = useState([]);
+
     
+    useEffect(() => {
+
+        fetch("http://localhost:5000/api/v1/products")
+        .then(response => response.json())
+        .then(result => setProducts(result))
+        .catch(error => console.log(error))
+
+    }, [])
 
     return (
         <Box>

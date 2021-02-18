@@ -1,16 +1,15 @@
-import { Box, Container, Grid} from '@material-ui/core';
+import { Box, Container, Grid } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-import React, { useContext, useEffect, useState } from 'react';
+import axios from 'axios';
+import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import { useHistory, useLocation } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import { UserContext } from '../../App';
-import { handleRegisterSystem, initializeFirebaseFramework } from '../../Firebase/FirebaseManager';
 import "./Register.css";
 
 
 
-const Register = (props) => {
-    initializeFirebaseFramework();
+const Register = () => {
 
     const history = useHistory();
     const location = useLocation();
@@ -21,63 +20,17 @@ const Register = (props) => {
 
     const onSubmit = data => {
 
+        axios.post("/auth/register", data)
+        .then(response  => {
 
-        handleRegisterSystem(data)
-        .then(response => {
-
-            if(response.success && response.email){
-
-                const registerUser = {...loggedInUser, ...response};
-                setLoggedInUser(registerUser);
-                handleData(response);
-                history.replace(from);
-            }
-            else {
-                
-                const registerUserError = {...loggedInUser, ...response};
-                setLoggedInUser(registerUserError);
-            }
+            // localStorage.setItem("token", response.data.token);
+            // axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.token}`;
         })
+        .catch(error => console.log(error.response.data.error))
 
     }
 
-
-    const handleData = (userData) => {
-
-        fetch('http://localhost:8080/adduser', {
-            method: 'POST',
-            body: JSON.stringify(userData),
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-            },
-        })
-        .then(response => response.json())
-        .then(result => {
-
-            console.log(result);
-        });
-
-    }
-
-
-
-    // useEffect(() => {
-
-    //     fetch('http://localhost:8080/adduser', {
-    //             method: 'POST',
-    //             body: JSON.stringify(registerData),
-    //             headers: {
-    //                 'Content-type': 'application/json; charset=UTF-8',
-    //             },
-    //         })
-    //         .then(response => response.json())
-    //         .then(result => {
     
-    //             console.log(result);
-    //         });
-
-
-    // }, [])
 
     
     return (
@@ -99,21 +52,15 @@ const Register = (props) => {
                                 <h3>Create an account</h3>
                                 <form onSubmit={handleSubmit(onSubmit)}>
                                     <Box className="input-box">
-                                        <input type="text" id="fullname" name="fullname" ref={register({ required: "Full name is required"})} placeholder="Full name"/>
+                                        <input type="text" id="firstname" name="firstname" ref={register({ required: "First name is required"})} placeholder="First name"/>
                                         {
-                                            errors.fullname && <span className="error">{errors.fullname.message}</span>
+                                            errors.firstname && <span className="error">{errors.firstname.message}</span>
                                         }
                                     </Box>
                                     <Box className="input-box">
-                                        <input type="text" id="mobile" name="mobile" ref={register({ required: "Mobile number is required"})} placeholder="Mobile number"/>
+                                        <input type="text" id="lastname" name="lastname" ref={register({ required: "Last name is required"})} placeholder="Last name"/>
                                         {
-                                            errors.mobile && <span className="error">{errors.mobile.message}</span>
-                                        }
-                                    </Box>
-                                    <Box className="input-box">
-                                        <input type="text" id="altMobile" name="altMobile" ref={register({ required: "Alternate mobile number is required"})} placeholder="Alternate mobile number"/>
-                                        {
-                                            errors.altMobile && <span className="error">{errors.altMobile.message}</span>
+                                            errors.lastname && <span className="error">{errors.lastname.message}</span>
                                         }
                                     </Box>
                                     <Box className="input-box">
@@ -128,6 +75,7 @@ const Register = (props) => {
                                             errors.email && <span className="error">{errors.email.message}</span>
                                         }
                                     </Box>
+                                    
                                     <Box className="input-box">
                                         <input type="password" name="password" ref={register({
                                             required: "Password is required",
@@ -146,56 +94,41 @@ const Register = (props) => {
 
                                     </Box>
                                     <Box className="input-box">
-                                        <input type="password" name="rePassword" ref={register({
+                                        <input type="password" name="confirmpassword" ref={register({
                                             required: "Confirm password is required",
                                             validate: (value) => value === watch("password") || "Passwords do not match"
                                         })} placeholder="Confirm password"/>
                                         {
-                                            errors.rePassword && <span className="error">{errors.rePassword.message}</span>
+                                            errors.confirmpassword && <span className="error">{errors.confirmpassword.message}</span>
                                         }
                                     </Box>
+
                                     <Box className="input-box">
-                                        <input type="text" id="bloodgroup" name="bloodgroup" ref={register({ required: "Blood Group is required"})} placeholder="Blood Group"/>
+                                        <input type="text" id="phone" name="phone" ref={register({ required: "Phone number is required"})} placeholder="Phone number"/>
                                         {
-                                            errors.bloodgroup && <span className="error">{errors.bloodgroup.message}</span>
+                                            errors.phone && <span className="error">{errors.phone.message}</span>
                                         }
                                     </Box>
-                                    <Box className="input-box">
-                                        <input type="text" id="religion" name="religion" ref={register({ required: "Religion is required"})} placeholder="Religion"/>
-                                        {
-                                            errors.religion && <span className="error">{errors.religion.message}</span>
-                                        }
-                                    </Box>
-                                    <Box className="input-box">
+                                    
+                                    
+                                    {/* <Box className="input-box">
                                         <input type="text" id="fulladdress" name="fulladdress" ref={register({ required: "Full address is required"})} placeholder="Full address"/>
                                         {
                                             errors.fulladdress && <span className="error">{errors.fulladdress.message}</span>
                                         }
                                     </Box>
-                                    <Box className="input-box">
-                                        <input type="text" id="weight" name="weight" ref={register({ required: "Weight is required"})} placeholder="Your weight"/>
-                                        {
-                                            errors.weight && <span className="error">{errors.weight.message}</span>
-                                        }
-                                    </Box>
+                                    
                                     <Box className="input-box">
                                         <input type="date" id="date" name="date" ref={register({ required: "Date of Birth is required"})} placeholder="Date of Birth"/>
                                         {
                                             errors.date && <span className="error">{errors.date.message}</span>
                                         }
-                                    </Box>
+                                    </Box> */}
 
-
-
-
-
-
-
-                                    
                                     <input type="submit" value="Create an account" />
                                 </form>
 
-                                <p className="already-account">Already have an account? <span onClick={props.handleRegister} className="toogle">Login</span></p> 
+                                <p className="already-account">Already have an account? <Link to="/login" className="toogle">Login</Link></p> 
                             </Box> 
                         </Grid>
                     </Grid>

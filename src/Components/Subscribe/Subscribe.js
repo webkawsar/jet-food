@@ -1,13 +1,12 @@
 import { Box, Grid, Paper, Switch, TextField } from '@material-ui/core';
+import { Pagination } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/styles';
 import React, { useContext, useEffect, useState } from 'react';
-import fakeData from '../../FakeData/FakeData';
-import Pagination from '@material-ui/lab/Pagination';
+import { useHistory, useParams } from 'react-router-dom';
+import { UserContext } from '../../App';
+import SubscribeCart from '../SubscribeCart/SubscribeCart';
 import SubscribeCategory from '../SubscribeCategory/SubscribeCategory';
 import { five, four, one, three, two, zero } from './OptionsData';
-import { UserContext } from '../../App';
-import { useHistory, useParams } from 'react-router-dom';
-import SubscribeCart from '../SubscribeCart/SubscribeCart';
 
 
 
@@ -27,19 +26,18 @@ const useStyles = makeStyles({
 
 const Subscribe = () => {
 
-    const [categories, setCategories] = useState(fakeData);
-    const [selectedCategory, setSelectedCategory] = useState(categories[0].id);
-    const [activeCatName, setActiveCatName] = useState(categories[0].name)
+    const { id } = useParams();
+    const [categories, setCategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState("");
+    const [activeCatName, setActiveCatName] = useState("")
     const [checked, setChecked] = useState({checked: false});
     const [page, setPage] = useState(0);
     const [order, setOrder] = useState({});
     const [options, setOptions] = useState([]);
     const [mealsTime, setMealsTime] = useState("");
     const [days, setDays] = useState(0);
-    const { id } = useParams();
-    const [price, setPrice] = useState(categories[0].price);
+    const [price, setPrice] = useState("");
 
-   
 
     const handleChange = (event) => {
         setChecked({ ...checked, [event.target.name]: event.target.checked });
@@ -47,24 +45,42 @@ const Subscribe = () => {
         setDays(0);
     };
 
-
     
     const handleMealsClick = (event, value) => {
       setPage(value);
     };
 
+    
+    useEffect(() => {
+        
+        fetch("http://localhost:5000/api/v1/products")
+        .then(response => response.json())
+        .then(result => setCategories(result))
+        .catch(error => console.log(error))
+        
+    }, [])
+
 
     useEffect(() => {
 
-        
-        // fetch("/")
-        // .then(res => res.json())
-        // .then(result => result)
-
-
         if(id){
-            setSelectedCategory(parseInt(id))
-        } 
+            setSelectedCategory(id);
+            if(categories.length){
+                categories.map(category => {
+                    if(category._id === id){
+                        setActiveCatName(category.title)
+                        setPrice(category.price)
+                    }
+                    return category;
+                })
+            }
+        }
+         else {
+             
+            setSelectedCategory(categories.length && categories[0]._id)
+            setActiveCatName(categories.length && categories[0].title)
+            setPrice(categories.length && categories[0].price)
+        }
 
         if(page === 0){
 
@@ -91,7 +107,7 @@ const Subscribe = () => {
             setOptions([...five])
         }
 
-    }, [page, id])
+    }, [page, id, categories])
 
     
     const handleOptions = (event) => {
@@ -107,12 +123,13 @@ const Subscribe = () => {
     const handleCategory = (cat) => {
 
         setSelectedCategory(cat.id)
-        setActiveCatName(cat.name)
+        setActiveCatName(cat.title)
         setPage(0);
         setOptions([]);
         setMealsTime("");
         setDays(0);
         setPrice(cat.price)
+        
     }
 
     
@@ -130,50 +147,41 @@ const Subscribe = () => {
             }
 
             const orderData = {
-                    id: selectedCategory,
-                    category: activeCatName,
-                    period: period,
-                    meals: page,
-                    mealsTime: mealsTime,
-                    days: days,
-                    price: price,
-                    qty: 1,
-                    optionals: {
-                        juice: ""
-                    }
-    
-                }
+                
+                id: selectedCategory,
+                title: activeCatName,
+                period: period,
+                meals: page,
+                mealsTime: mealsTime,
+                days: days,
+                price: price,
+                qty: 1,
+                   
+            }
             
             setOrder({...orderData});
     
         }
 
 
-    }, [checked, page, mealsTime, days, selectedCategory])
+    }, [checked, page, mealsTime, days, selectedCategory, price, activeCatName])
 
 
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);
-   const history = useHistory();
+    const history = useHistory();
 
-
-
-
-
-   const [products, setProducts] = useState([]);
-   const [cart, setCart] = useState([]);
-   
     const handleAddToCart = () => {
+
+        
 
         const orders = [...loggedInUser.orders, order]
         setLoggedInUser({...loggedInUser, orders})
         history.push("/cart")
 
-    //    localStorage.setItem("Order", JSON.stringify(order))
-
-
     }
 
- 
+
+    // console.log(loggedInUser);
 
     const classes = useStyles();
     return (
@@ -188,12 +196,12 @@ const Subscribe = () => {
                                 <Grid container spacing={2}>
                                     {
                                         categories.map(category => <SubscribeCategory 
-                                            handleCategory={handleCategory} 
-                                            key={category.id} 
-                                            category={category}
-                                            categories={categories}
-                                            selectedCategory={selectedCategory}
-                                            ></SubscribeCategory>)
+                                                                        handleCategory={handleCategory} 
+                                                                        key={category._id} 
+                                                                        category={category}
+                                                                        categories={categories}
+                                                                        selectedCategory={selectedCategory}
+                                                                    ></SubscribeCategory>)
                                     }
 
                                 </Grid>
@@ -316,7 +324,7 @@ const Subscribe = () => {
                             order={order}
                         >
                         </SubscribeCart>
-                    </Grid>
+                    </Grid> 
                 </Grid>
             </Box>
         </div>

@@ -3,8 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Box, Container, Grid, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import fakeData from '../../FakeData/FakeData';
+import { useHistory, useParams } from 'react-router-dom';
 
 
 
@@ -30,21 +29,24 @@ const useStyles = makeStyles({
 })
 
 const SingleProductDetails = () => {
-
+    const history = useHistory();
     const { id } = useParams();
-    const data = fakeData.filter(prod => prod.id === parseInt(id))
-    const [ productDetails, setProductsDetails ] = useState(data[0]);
+    const [ productDetails, setProductsDetails ] = useState({});
 
     useEffect(() => {
 
-        fetch("")
+        fetch(`http://localhost:5000/api/v1/products/${id}`)
         .then(response => response.json())
         .then(result => setProductsDetails(result))
         .catch(error => console.log(error))
 
 
-    }, [])
+    }, [id])
 
+    const handleClick = () => {
+
+        history.push(`/subscribe/${id}`)
+    }
 
   
     const classes = useStyles();
@@ -56,12 +58,12 @@ const SingleProductDetails = () => {
                         <Paper className={classes.paper}>
                             <Grid container spacing={5}>
                                 <Grid item md={5}>
-                                    <img className={classes.image} src="https://eatforum.org/content/uploads/2018/05/table_with_food_top_view_900x700.jpg" alt=""/>  
+                                    <img className={classes.image} src={`http://localhost:5000/images/${productDetails.image}`} alt=""/>  
                                 </Grid>
                                 <Grid item md={7}>
                                     <Box>
-                                        <h2>{productDetails.name} Meal Plan</h2>
-                                        <p style={{marginBottom: "10px"}}>{productDetails.prodDetails}</p>
+                                        <h2>{productDetails.title} Meal Plan</h2>
+                                        <p style={{marginBottom: "10px"}}>{ productDetails.description }</p>
 
                                         <ul style={{listStyle: "none"}}>
                                             <li>
@@ -110,7 +112,7 @@ const SingleProductDetails = () => {
                                         </Box>
                                     </Box>
 
-                                    <button style={{marginTop: "100px"}} className="mainButton">Sign Up Today</button>
+                                    <button onClick={handleClick} style={{marginTop: "100px"}} className="mainButton">Sign Up Today</button>
                                 </Grid>
                             </Grid>
                         </Paper>

@@ -1,8 +1,7 @@
 import { Box, Container, Grid, makeStyles, Paper, TextField } from '@material-ui/core';
-import React, { useEffect } from 'react';
-import { useContext } from 'react';
-import { useState } from 'react';
+import React, { memo, useContext } from 'react';
 import { useForm } from 'react-hook-form';
+import { useHistory } from 'react-router-dom';
 import { UserContext } from '../../App';
 
 
@@ -27,37 +26,59 @@ const useStyles = makeStyles({
 
 const BillingDetails = () => {
 
-
-
+    const history = useHistory();
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);
     const { register, handleSubmit, errors } = useForm();
     const onSubmit = (data) => {
 
+       
+        
         const billingData = data;
-        const newUserData = {...loggedInUser.userData, billingData}
-        setLoggedInUser({...loggedInUser, userData: newUserData})
+        const newUserData = {...loggedInUser.userData, billingData};
+        const order = {...loggedInUser, userData: newUserData}
+        setLoggedInUser(order);
+
+        fetch('http://localhost:5000/api/v1/orders', {
+            method: 'POST',
+            body: JSON.stringify(order),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        })
+        .then(response => response.json())
+        .then(result => {
+
+            if(result._id){
+
+                alert("Order Submit Successfully");
+                history.push("/login")
+            }
+        })
+        .catch(error => alert(error))
 
     }
 
    
 
-    const [newMemberSignUpFee, setNewMemberSignUpFee] = useState(6)
-    const [items, setItems] = useState([]);
-    const [tax, setTax] = useState(0)
-    const [total, setTotal] = useState(0)
+    // const [newMemberSignUpFee, setNewMemberSignUpFee] = useState(6)
+    // const [items, setItems] = useState(loggedInUser.orders);
+    // const [tax, setTax] = useState(0)
+    // const [total, setTotal] = useState(0)
 
-    useEffect(() => {
+    // useEffect(() => {
 
         
-        const total = items.reduce((total, item) => (item.price * item.qty) + total, 0)
-        const payableTax = total * 0.15;
-        setTax(Math.round(payableTax))
-        setTotal(total);
-        setItems(loggedInUser.orders);
+    //     const total = items.reduce((total, item) => (item.price * item.qty) + total, 0)
+    //     const payableTax = total * 0.15;
+    //     setTax(Math.round(payableTax))
+    //     setTotal(total);
+        
 
-    }, [loggedInUser, items])
+        
+    // }, [loggedInUser, items])
 
-    console.log(loggedInUser);
+
+
 
     const classes = useStyles();
     return (
@@ -152,19 +173,26 @@ const BillingDetails = () => {
                                     <Box>
                                         <Grid container>
                                             <Grid item xs={12} sm={12} md={12}>
-                                                <Box display="flex" justifyContent="space-between">
+                                                {/* <Box display="flex" justifyContent="space-between">
                                                     <h4>Product</h4>
                                                     <h4>Subtotal</h4>
                                                 </Box>
 
                                                 {
-                                                    items.map(item => <Box key={item.id}>
-                                                                        <Box display="flex" justifyContent="space-between">
-                                                                            <h5 style={{fontWeight: "normal", margin: "0"}}> <strong>{item.category}</strong> X <strong> {item.qty} </strong> X <strong> {item.mealsTime} </strong> X <strong> {item.days} days</strong></h5>
-                                                                            <h5 style={{margin: "0", fontWeight: "normal"}}><strong>$ {(item.price * item.qty)}</strong> / <strong>{item.period}</strong></h5>
-                                                                        </Box>
-                                                                        <hr/>
-
+                                                    items.map(item =>   <Box key={item.id}>
+                                                                            <Box display="flex" justifyContent="space-between">
+                                                                                <h5 style={{fontWeight: "normal", margin: "0"}}> 
+                                                                                    <strong>{item.title}</strong> X 
+                                                                                    <strong> {item.qty} </strong> X 
+                                                                                    <strong> {item.mealsTime} </strong> X 
+                                                                                    <strong> {item.days} days</strong>
+                                                                                </h5>
+                                                                                <h5 style={{margin: "0", fontWeight: "normal"}}>
+                                                                                    <strong>$ {(item.price * item.qty)}</strong> / 
+                                                                                    <strong>{item.period}</strong>
+                                                                                </h5>
+                                                                            </Box>
+                                                                            <hr/>
                                                                         </Box>)
                                                 }
 
@@ -201,68 +229,67 @@ const BillingDetails = () => {
                                                 <Box display="flex" justifyContent="space-between">
                                                     <h4 style={{margin: "0"}}>Recurring total</h4>
                                                     <h4 style={{margin: "0"}}>${total + tax}</h4>
-                                                </Box>
+                                                </Box> */}
                                                 <hr/>
                                                 
                                                 <h4 style={{margin: "0"}}>Pay with your credit card.</h4>
                                                 <Box style={{padding: "20px"}}>
                                                     <TextField
-                                                            inputRef={register({
-                                                                required: "Card number is required",
-                                                            })}
-                                                            margin="normal"
-                                                            type="number"
-                                                            fullWidth
-                                                            name="cardnumber"
-                                                            id="cardnumber"
-                                                            variant="filled"
-                                                            label="card number"
-                                                            // className={classes.input}
-                                                            FormHelperTextProps={{
-                                                                className: classes.helperText,
-                                                            }}
-                                                            helperText={errors.cardnumber && errors.cardnumber.message}
+                                                        inputRef={register({
+                                                            required: "Card number is required",
+                                                        })}
+                                                        margin="normal"
+                                                        type="number"
+                                                        fullWidth
+                                                        name="cardnumber"
+                                                        id="cardnumber"
+                                                        variant="filled"
+                                                        label="card number"
+                                                        // className={classes.input}
+                                                        FormHelperTextProps={{
+                                                            className: classes.helperText,
+                                                        }}
+                                                        helperText={errors.cardnumber && errors.cardnumber.message}
                                                     />
                                                     <TextField
-                                                            inputRef={register({
-                                                                required: "Expiry Date is required",
-                                                            })}
-                                                            margin="normal"
-                                                            type="number"
-                                                            fullWidth
-                                                            name="expiredate"
-                                                            id="expiredate"
-                                                            variant="filled"
-                                                            label="mm / yy"
-                                                            // className={classes.input}
-                                                            FormHelperTextProps={{
-                                                                className: classes.helperText,
-                                                            }}
-                                                            helperText={errors.expiredate && errors.expiredate.message}
+                                                        inputRef={register({
+                                                            required: "Expiry Date is required",
+                                                        })}
+                                                        margin="normal"
+                                                        type="number"
+                                                        fullWidth
+                                                        name="expiredate"
+                                                        id="expiredate"
+                                                        variant="filled"
+                                                        label="mm / yy"
+                                                        // className={classes.input}
+                                                        FormHelperTextProps={{
+                                                            className: classes.helperText,
+                                                        }}
+                                                        helperText={errors.expiredate && errors.expiredate.message}
                                                     />
 
 
                                                     <TextField
-                                                            inputRef={register({
-                                                                required: "Card Code (CVC) is required",
-                                                            })}
-                                                            margin="normal"
-                                                            type="number"
-                                                            fullWidth
-                                                            name="cvc"
-                                                            id="cvc"
-                                                            variant="filled"
-                                                            label="CVC"
-                                                            // className={classes.input}
-                                                            FormHelperTextProps={{
-                                                                className: classes.helperText,
-                                                            }}
-                                                            helperText={errors.cvc && errors.cvc.message}
+                                                        inputRef={register({
+                                                            required: "Card Code (CVC) is required",
+                                                        })}
+                                                        margin="normal"
+                                                        type="number"
+                                                        fullWidth
+                                                        name="cvc"
+                                                        id="cvc"
+                                                        variant="filled"
+                                                        label="CVC"
+                                                        // className={classes.input}
+                                                        FormHelperTextProps={{
+                                                            className: classes.helperText,
+                                                        }}
+                                                        helperText={errors.cvc && errors.cvc.message}
                                                     />
                                                 
                                                 </Box>
                                                 <hr/>
-
 
                                                 <button style={{marginTop: "50px"}} className="mainButton" type="submit">Sign Up Now</button>
                                             </Grid>
@@ -278,4 +305,4 @@ const BillingDetails = () => {
     );
 };
 
-export default BillingDetails;
+export default memo(BillingDetails);

@@ -36,7 +36,7 @@ const SubscribeCart = (props) => {
     useEffect(() => {
 
     
-        if(order.category && order.days && order.meals && order.mealsTime && order.period){
+        if(order.title && order.days && order.meals && order.mealsTime && order.period){
 
             setDisabledButton(false)
         }

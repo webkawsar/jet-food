@@ -161,17 +161,17 @@ const Footer = () => {
                                                 <div className="input-group-prepend">
                                                     <div className="input-group-text"><i className="icon-user"></i></div>
                                                 </div>
-                                                <input type="text" className="required form-control" id="quick-contact-form-name" name="quick-contact-form-name" value="" placeholder="Full Name" />
+                                                <input type="text" className="required form-control" id="quick-contact-form-name" name="quick-contact-form-name" placeholder="Full Name" />
                                             </div>
                                             <div className="input-group mx-auto">
                                                 <div className="input-group-prepend">
                                                     <div className="input-group-text"><i className="icon-email2"></i></div>
                                                 </div>
-                                                <input type="text" className="required form-control email" id="quick-contact-form-email" name="quick-contact-form-email" value="" placeholder="Email Address" />
+                                                <input type="text" className="required form-control email" id="quick-contact-form-email" name="quick-contact-form-email"  placeholder="Email Address" />
                                             </div>
                                             <textarea className="required form-control input-block-level short-textarea" id="quick-contact-form-message" name="quick-contact-form-message" rows="4" cols="30" placeholder="Message"></textarea>
-                                            <input type="text" className="d-none" id="quick-contact-form-botcheck" name="quick-contact-form-botcheck" value="" />
-                                            <input type="hidden" name="prefix" value="quick-contact-form-" />
+                                            <input type="text" className="d-none" id="quick-contact-form-botcheck" name="quick-contact-form-botcheck"  />
+                                            <input type="hidden" name="prefix"  />
                                             <button type="submit" id="quick-contact-form-submit" name="quick-contact-form-submit" className="btn btn-danger m-0" value="submit">Send Email</button>
 
                                         </form>

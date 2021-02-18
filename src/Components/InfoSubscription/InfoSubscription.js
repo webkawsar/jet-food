@@ -45,8 +45,8 @@ const InfoSubscription = () => {
                             type="email"
                             margin="normal"
                             id="email"
-                            defaultValue={email}
-                            onChange={handleChange}
+                            // defaultValue={email}
+                            // onChange={handleChange}
                             name="email"
                             label="Email"
                             variant="outlined"
