@@ -52,33 +52,25 @@ const Cart = () => {
 
 
 
+    const handleRemoveCartItem = (removeIndex) => {
 
-    const handleRemoveCartItem = (removeId) => {
+        let newCartItems = [...cartItems];
 
+        if(removeIndex !== -1){
 
-        // const index = cartItems.findIndex((item) => item.id === removeId);
-        // let newCartItems = [...cartItems];
-
-        // if(index >= 0){
-
-        //     newCartItems.splice(index, 1);
-        //     setLoggedInUser(newCartItems)
-        //     setCartItems(items)
-        //     setItems(false)
-        // }
-
-
-
-        const items = cartItems.filter(item => item.id !== removeId)
-        const newUserData = {...loggedInUser}
-        newUserData.orders = items
-        setLoggedInUser(newUserData)
-        setCartItems(items)
-        setItems(false)
+            newCartItems.splice(removeIndex, 1);
+            const newData = {...loggedInUser}
+            newData.orders = newCartItems
+            setLoggedInUser(newData)
+            setCartItems(newCartItems)
+            setItems(false)
+        }
     }
 
   
 
+
+    
 
     return (
         <Container>
@@ -113,6 +105,7 @@ const Cart = () => {
                                     cartItems.map((item, index) => <CartItem 
                                                                         item={item} 
                                                                         key={index}
+                                                                        index={index}
                                                                         handleRemoveCartItem={handleRemoveCartItem}
                                                                         >
 

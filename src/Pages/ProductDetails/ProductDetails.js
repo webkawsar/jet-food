@@ -1,4 +1,5 @@
 import { Box } from '@material-ui/core';
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import Footer from '../../Components/Footer/Footer';
 import Header from '../../Components/Header/Header';
@@ -14,10 +15,12 @@ const ProductDetails = () => {
 
     useEffect(() => {
 
-        fetch("http://localhost:5000/api/v1/products")
-        .then(response => response.json())
-        .then(result => setProducts(result))
-        .catch(error => console.log(error))
+		axios.get("/products")
+		.then(response => {
+			setProducts(response.data)
+		})
+		.catch(error => console.log(error))
+
 
 
     }, [])

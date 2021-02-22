@@ -49,16 +49,16 @@ const SubscribeCategory = (props) => {
     return (
         <>
             <Grid item xs={4} sm={3} md={2} >
-                <Box className={`${classes.box} ${active}`} onClick={() => props.handleCategory(props.category)}>
-                    <Link to={ `/subscribe/${_id}`}>
+                <Link to={ `/subscribe/${_id}`}>
+                    <Box className={`${classes.box} ${active}`} onClick={() => props.handleCategory(props.category)}>
                         <Box style={{textAlign: "center"}}>
                             <img style={{borderRadius: "6px", height: "120px"}} src={`http://localhost:5000/images/${image}`} alt=""/>
                         </Box>
                         <Box>
                             <h5 style={{textAlign: "center", margin: "12px 0 0 0"}}>{title}</h5>
                         </Box>
-                    </Link>
-                </Box>
+                    </Box>
+                </Link>
             </Grid>
         </>
     );

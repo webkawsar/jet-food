@@ -41,15 +41,14 @@ const useStyles = makeStyles({
 
 const SingleHealthProductDetails = () => {
     const { id } = useParams();
-    const data = pd.filter(prod => prod.id === parseInt(id))
-    const [ healthProdDetails, setHealthProdDetails ] = useState(data[0]);
+    const [ healthProdDetails, setHealthProdDetails ] = useState([]);
 
     useEffect(() => {
 
-        fetch("")
-        .then(response => response.json())
-        .then(result => setHealthProdDetails(result))
-        .catch(error => console.log(error))
+        // fetch("/products")
+        // .then(response => response.json())
+        // .then(result => setHealthProdDetails(result))
+        // .catch(error => console.log(error))
 
 
     }, [])

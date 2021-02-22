@@ -1,4 +1,5 @@
 import { Box, Container, Grid, makeStyles, Paper, TextField } from '@material-ui/core';
+import axios from 'axios';
 import React, { memo, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
@@ -38,24 +39,21 @@ const BillingDetails = () => {
         const order = {...loggedInUser, userData: newUserData}
         setLoggedInUser(order);
 
-        fetch('http://localhost:5000/api/v1/orders', {
-            method: 'POST',
-            body: JSON.stringify(order),
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-            },
-        })
-        .then(response => response.json())
-        .then(result => {
-
-            if(result._id){
+        axios.post("/orders", order)
+        .then(response  =>{
+    
+            if(response.data._id){
 
                 alert("Order Submit Successfully");
+                setLoggedInUser({});
                 history.push("/login")
+                
             }
         })
-        .catch(error => alert(error))
+        .catch(error => console.log(error))
+    
 
+    
     }
 
    

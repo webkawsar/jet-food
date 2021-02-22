@@ -44,7 +44,6 @@ const CartItem = (props) => {
     }
 
     
-    console.log(loggedInUser);
 
     const classes = useStyles();
     return (
@@ -54,7 +53,7 @@ const CartItem = (props) => {
                 <Grid item xs={12} sm={6} md={6}>
                     <Box display="flex" alignItems="center">
                         <Box mr={2}>
-                            <IconButton onClick={() => props.handleRemoveCartItem(id)}>
+                            <IconButton onClick={() => props.handleRemoveCartItem(props.index)}>
                                 <Cancel></Cancel>
                             </IconButton>
                         </Box>

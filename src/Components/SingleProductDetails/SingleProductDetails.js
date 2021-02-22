@@ -2,6 +2,7 @@ import { faAtom, faBiohazard, faBurn, faPlus, faSun } from '@fortawesome/free-so
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Box, Container, Grid, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
@@ -35,11 +36,11 @@ const SingleProductDetails = () => {
 
     useEffect(() => {
 
-        fetch(`http://localhost:5000/api/v1/products/${id}`)
-        .then(response => response.json())
-        .then(result => setProductsDetails(result))
-        .catch(error => console.log(error))
-
+        axios.get(`/products/${id}`)
+		.then(response => {
+			setProductsDetails(response.data)
+		})
+		.catch(error => console.log(error))
 
     }, [id])
 

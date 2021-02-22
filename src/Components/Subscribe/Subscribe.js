@@ -1,6 +1,7 @@
 import { Box, Grid, Paper, Switch, TextField } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/styles';
+import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { UserContext } from '../../App';
@@ -53,10 +54,12 @@ const Subscribe = () => {
     
     useEffect(() => {
         
-        fetch("http://localhost:5000/api/v1/products")
-        .then(response => response.json())
-        .then(result => setCategories(result))
-        .catch(error => console.log(error))
+		axios.get("/products")
+		.then(response => {
+			setCategories(response.data)
+		})
+		.catch(error => console.log(error))
+
         
     }, [])
 
@@ -172,8 +175,6 @@ const Subscribe = () => {
 
     const handleAddToCart = () => {
 
-        
-
         const orders = [...loggedInUser.orders, order]
         setLoggedInUser({...loggedInUser, orders})
         history.push("/cart")
@@ -181,7 +182,7 @@ const Subscribe = () => {
     }
 
 
-    // console.log(loggedInUser);
+    
 
     const classes = useStyles();
     return (

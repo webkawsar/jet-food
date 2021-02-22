@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import "../../Assets/css/animate.css";
@@ -39,9 +40,12 @@ const Header = () => {
     
     useEffect(() => {
 
-        fetch("http://localhost:5000/api/v1/products")
-        .then(response => response.json())
-        .then(result => setProducts(result))
+
+		axios.get("/products")
+		.then(response => {
+			setProducts(response.data)
+		})
+		.catch(error => console.log(error))
 
     }, [])
 
@@ -77,13 +81,19 @@ const Header = () => {
 										</li>
 										<li className="menu-item">
 											<Link className="menu-link" to="/home"><div>MEAL PLANS</div></Link>
+											
 											<ul className="sub-menu-container">
 												{
+													products.length ?
 													products.map(product => <li key={product._id} className="menu-item">
 																				<Link className="menu-link" to={`/prod/${product._id}`}>
 																					<div> { product.title }  Meal Plan</div>
 																				</Link>
 																			</li>)
+													:
+													<li className="menu-item">
+														<Link className="menu-link" to="/home"><div>Product comming soon</div></Link>
+													</li>
 												}
 											</ul>
 										</li>
@@ -93,18 +103,21 @@ const Header = () => {
 										</li>
 
 										<li className="menu-item">
-											<Link className="menu-link" to="/health"><div>HEALTH SHOTS</div></Link>
+											<Link className="menu-link" to="/"><div>HEALTH SHOTS</div></Link>
 											
 											<ul className="sub-menu-container">
 												{
+													healthProducts.length ?
 													healthProducts.map(healthProd => 	<li key={healthProd.id} className="menu-item">
 																							<Link className="menu-link" to={`/health/prod/${healthProd.id}`}>
 																								<div> { healthProd.name } </div>
 																							</Link>
 																						</li>)
+													:
+													<li className="menu-item">
+														<Link className="menu-link" to="/home"><div>Product comming soon</div></Link>
+													</li>
 												}
-
-												
 											</ul>
 										</li>
 										<li className="menu-item">
@@ -126,9 +139,12 @@ const Header = () => {
 											</li>
 										}
 										
-										<li className="menu-item">
-											<Link className="menu-link" to="/profile"><div>Profile</div></Link>
-										</li>
+										{
+											sessionStorage.getItem("token") &&
+											<li className="menu-item">
+												<Link className="menu-link" to="/profile"><div>Profile</div></Link>
+											</li>
+										}
 									</ul>
 								</nav>
 							</div>

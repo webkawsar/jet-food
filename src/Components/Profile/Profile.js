@@ -63,20 +63,7 @@ const Profile = () => {
                     ]}
 
                     data={ orders?.map(order => order) }
-                    actions={[
-                        {
-                        icon: 'visibility',
-                        tooltip: 'View Order',
-                        onClick: (event, rowData) => history.push(`/app/orders/list/${rowData._id}`)
-                        },
-                        rowData => ({
-                        icon: 'delete',
-                        tooltip: 'Delete User',
-                        onClick: handleDelete
-                        
-                        })
-                    ]}
-                    
+                
                     options={{
                         actionsColumnIndex: -1,
                         sorting: true,

@@ -30,7 +30,7 @@ const Products = ({heading, allProducts}) => {
     return (
 
         <Container className={classes.root}>
-            <h1 style={{textAlign: "center"}}> { heading } </h1>
+            <h1 style={{textAlign: "center", margin: "40px 0 70px"}}> { heading } </h1>
             <Grid container spacing={4}>
 
                 {

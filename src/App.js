@@ -18,9 +18,8 @@ import RegisterPage from './Pages/RegisterPage/RegisterPage';
 require('dotenv').config()
 
 
-
+// set default url
 axios.defaults.baseURL = process.env.BASE_URL || "http://localhost:5000/api/v1";
-
 if(sessionStorage.token){
 
   axios.defaults.headers.common['Authorization'] = `Bearer ${sessionStorage.token}`;

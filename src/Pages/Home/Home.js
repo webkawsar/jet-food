@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import DeliverySystem from '../../Components/DeliverySystem/DeliverySystem';
 import Footer from '../../Components/Footer/Footer';
@@ -19,10 +20,12 @@ const Home = () => {
     
     useEffect(() => {
 
-        fetch("http://localhost:5000/api/v1/products")
-        .then(response => response.json())
-        .then(result => setProducts(result))
-        .catch(error => console.log(error))
+		axios.get("/products")
+		.then(response => {
+			setProducts(response.data)
+		})
+		.catch(error => console.log(error))
+
         
     }, [])
     
